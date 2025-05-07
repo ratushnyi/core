@@ -35,7 +35,7 @@ namespace TendedTarsier.Core.Panels
             }
         }
 
-        public async UniTask<T> Show()
+        public async UniTask<T> Show(bool immediate = false)
         {
             if (Instance != null)
             {
@@ -46,12 +46,15 @@ namespace TendedTarsier.Core.Panels
             PanelState = State.Showing;
             await Load();
             await Instance.InitializeAsync();
-            await Instance.ShowAnimation();
+            if (!immediate)
+            {
+                await Instance.ShowAnimation();
+            }
             PanelState = State.Show;
             return Instance;
         }
 
-        public async UniTask Hide()
+        public async UniTask Hide(bool immediate = false)
         {
             if (Instance == null)
             {
@@ -60,7 +63,10 @@ namespace TendedTarsier.Core.Panels
             }
 
             PanelState = State.Hiding;
-            await Instance.HideAnimation();
+            if (!immediate)
+            {
+                await Instance.HideAnimation();
+            }
             await Instance.DisposeAsync();
             await Unload();
             PanelState = State.Hide;

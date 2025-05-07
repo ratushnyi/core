@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TendedTarsier.Core.Panels
 {
-    public abstract class PanelBase : MonoBehaviour
+    public class PanelBase : MonoBehaviour
     {
         [SerializeField]
         private bool _showInstantly;

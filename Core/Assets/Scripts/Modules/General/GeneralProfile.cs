@@ -11,5 +11,8 @@ namespace TendedTarsier.Core.Modules.General
         
         [MemoryPackOrder(0)]
         public DateTime? FirstStartDate { get; set; }
+
+        [MemoryPackOrder(1)]
+        public string LastScene { get; set; }
     }
 }

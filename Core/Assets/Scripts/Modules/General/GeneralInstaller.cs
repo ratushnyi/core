@@ -11,13 +11,10 @@ namespace TendedTarsier.Core.Modules.General
     {
         [Header("Engine")]
         [SerializeField] private EventSystem _eventSystem;
-        [Header("Configs")]
-        [SerializeField] private GeneralConfig _generalConfig;
 
         public override void InstallBindings()
         {
             BindEngine();
-            BindConfigs();
             BindServices();
             BindProfiles();
         }
@@ -32,11 +29,6 @@ namespace TendedTarsier.Core.Modules.General
         {
             Container.BindService<ProfileService>();
             Container.BindService<InputService>();
-        }
-
-        private void BindConfigs()
-        {
-            Container.Bind<GeneralConfig>().FromInstance(_generalConfig).AsSingle().NonLazy();
         }
 
         private void BindProfiles()
