@@ -1,4 +1,3 @@
-using TendedTarsier.Core.Modules.General;
 using TendedTarsier.Core.Utilities.Extensions;
 using UnityEngine;
 using Zenject;
@@ -7,23 +6,29 @@ namespace TendedTarsier.Core.Modules.Menu
 {
     public class MenuInstaller : MonoInstaller
     {
-        [SerializeField] private Canvas _canvas;
+        [SerializeField] private MenuModuleController _menuModuleController;
         [SerializeField] private MenuConfig _menuConfig;
+        [SerializeField] private Canvas _canvas;
 
         public override void InstallBindings()
         {
+            BindModule();
             BindConfig();
             BindPanels();
         }
 
+        private void BindModule()
+        {
+            Container.Bind<MenuModuleController>().FromInstance(_menuModuleController).AsSingle().NonLazy();;
+        }
+
         private void BindConfig()
         {
-            Container.Bind<MenuConfig>().FromInstance(_menuConfig);
+            Container.Bind<MenuConfig>().FromInstance(_menuConfig).AsSingle().NonLazy();;
         }
 
         private void BindPanels()
         {
-            Container.BindPanel<LoadingPanel>(_menuConfig.LoadingPanel, _canvas);
             Container.BindPanel<MenuPanel>(_menuConfig.MenuPanel, _canvas);
         }
     }

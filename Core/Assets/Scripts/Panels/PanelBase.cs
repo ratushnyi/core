@@ -30,6 +30,7 @@ namespace TendedTarsier.Core.Panels
 
         protected virtual void Dispose()
         {
+            CompositeDisposable.Dispose();
         }
 
         public virtual UniTask ShowAnimation()
@@ -42,11 +43,6 @@ namespace TendedTarsier.Core.Panels
         {
             gameObject.SetActive(false);
             return UniTask.CompletedTask;
-        }
-
-        public virtual void OnDestroy()
-        {
-            CompositeDisposable.Dispose();
         }
     }
 }

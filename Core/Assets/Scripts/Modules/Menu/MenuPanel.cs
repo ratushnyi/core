@@ -3,11 +3,11 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TendedTarsier.Core.Modules.General;
 using TendedTarsier.Core.Panels;
+using TendedTarsier.Core.Services.Modules;
 using TendedTarsier.Core.Services.Profile;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Zenject;
 
@@ -26,22 +26,22 @@ namespace TendedTarsier.Core.Modules.Menu
 
         private EventSystem _eventSystem;
         private ProfileService _profileService;
+        private ModuleService _moduleService;
         private GeneralProfile _generalProfile;
         private MenuConfig _menuConfig;
-        private PanelLoader<LoadingPanel> _loadingPanel;
 
         [Inject]
         private void Construct(
-            PanelLoader<LoadingPanel> loadingPanel,
             MenuConfig menuConfig,
             GeneralProfile generalProfile,
             ProfileService profileService,
+            ModuleService moduleService,
             EventSystem eventSystem)
         {
-            _loadingPanel = loadingPanel;
             _menuConfig = menuConfig;
             _generalProfile = generalProfile;
             _profileService = profileService;
+            _moduleService = moduleService;
             _eventSystem = eventSystem;
         }
 
@@ -74,30 +74,26 @@ namespace TendedTarsier.Core.Modules.Menu
             await sequence.ToUniTask();
 
             _continueButton.OnClickAsObservable().Subscribe(_ => OnContinueButtonClick()).AddTo(CompositeDisposable);
-            _newGameButton.OnClickAsObservable().Subscribe(_ => OnNewGameButtonClick().Forget()).AddTo(CompositeDisposable);
+            _newGameButton.OnClickAsObservable().Subscribe(_ => OnNewGameButtonClick()).AddTo(CompositeDisposable);
             _exitButton.OnClickAsObservable().Subscribe(_ => OnExitButtonClick()).AddTo(CompositeDisposable);
         }
 
         private void OnContinueButtonClick()
         {
-            CompositeDisposable.Dispose();
-            SceneManager.LoadScene(_generalProfile.LastScene);
+            Dispose();
+            _moduleService.LoadModule(_generalProfile.LastScene).Forget();
         }
 
-        private async UniTaskVoid OnNewGameButtonClick()
+        private void OnNewGameButtonClick()
         {
-            CompositeDisposable.Dispose();
+            Dispose();
             _profileService.ClearAll();
-            _generalProfile.FirstStartDate = DateTime.UtcNow;
-            _generalProfile.LastScene = _menuConfig.NewGameScene;
-            _generalProfile.Save();
-            await _loadingPanel.Show();
-            SceneManager.LoadScene(_menuConfig.NewGameScene);
+            _moduleService.LoadModule(_generalProfile.LastScene).Forget();
         }
 
         private void OnExitButtonClick()
         {
-            CompositeDisposable.Dispose();
+            Dispose();
             Application.Quit();
         }
     }

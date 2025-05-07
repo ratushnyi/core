@@ -10,14 +10,12 @@ namespace TendedTarsier.Core.Services.Input
     {
         private readonly GameplayInput _gameplayInput;
 
-        public IObservable<InputAction.CallbackContext> OnGyroscopeStarted { get; private set; }
-        public IObservable<InputAction.CallbackContext> OnGyroscopePerformed { get; private set; }
-        public IObservable<InputAction.CallbackContext> OnGyroscopeCanceled { get; private set; }
-
+        public InputAction LeftStick;
         public IObservable<InputAction.CallbackContext> OnLeftStickStarted { get; private set; }
         public IObservable<InputAction.CallbackContext> OnLeftStickPerformed { get; private set; }
         public IObservable<InputAction.CallbackContext> OnLeftStickCanceled { get; private set; }
 
+        public InputAction RightStick;
         public IObservable<InputAction.CallbackContext> OnRightStickStarted { get; private set; }
         public IObservable<InputAction.CallbackContext> OnRightStickPerformed { get; private set; }
         public IObservable<InputAction.CallbackContext> OnRightStickCanceled { get; private set; }
@@ -56,9 +54,12 @@ namespace TendedTarsier.Core.Services.Input
 
         private void InitInput()
         {
-            (OnGyroscopeStarted, OnGyroscopePerformed, OnGyroscopeCanceled) = _gameplayInput.Gameplay.Gyroscope.ToObservable();
+            LeftStick = _gameplayInput.Gameplay.LeftStick;
             (OnLeftStickStarted, OnLeftStickPerformed, OnLeftStickCanceled) = _gameplayInput.Gameplay.LeftStick.ToObservable();
+
+            RightStick = _gameplayInput.Gameplay.RightStick;
             (OnRightStickStarted, OnRightStickPerformed, OnRightStickCanceled) = _gameplayInput.Gameplay.RightStick.ToObservable();
+
             (OnXButtonStarted, OnXButtonPerformed, OnXButtonCanceled) = _gameplayInput.Gameplay.ButtonX.ToObservable();
             (OnYButtonStarted, OnYButtonPerformed, OnYButtonCanceled) = _gameplayInput.Gameplay.ButtonY.ToObservable();
             (OnAButtonStarted, OnAButtonPerformed, OnAButtonCanceled) = _gameplayInput.Gameplay.ButtonA.ToObservable();
