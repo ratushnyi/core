@@ -7,7 +7,7 @@ namespace TendedTarsier.Core.Modules.General
     [MemoryPackable(GenerateType.VersionTolerant)]
     public partial class GeneralProfile : ProfileBase
     {
-        public override string Name => "Profile";
+        public override string Name => "General";
         
         [MemoryPackOrder(0)]
         public DateTime? FirstStartDate { get; set; }
