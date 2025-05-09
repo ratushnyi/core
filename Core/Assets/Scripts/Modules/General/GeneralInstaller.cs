@@ -1,3 +1,4 @@
+using TendedTarsier.Core.Services.Audio;
 using TendedTarsier.Core.Services.Input;
 using TendedTarsier.Core.Services.Modules;
 using TendedTarsier.Core.Services.Profile;
@@ -36,6 +37,7 @@ namespace TendedTarsier.Core.Modules.General
             Container.BindService<ModuleService>();
             Container.BindService<ProfileService>();
             Container.BindService<InputService>();
+            Container.BindService<AudioService>();
         }
 
         private void BindConfigs()
