@@ -9,9 +9,16 @@ namespace TendedTarsier.Core.Modules
         [Inject] protected ModuleService ModuleService { get; set; }
         [Inject] protected DiContainer Container { get; set; }
 
-        protected new T Instantiate<T>(T prefab, Transform parent = null) where T : Component
+        protected new T Instantiate<T>(T prefab, Transform parent = null, bool worldPositionStays = true) where T : Component
         {
-            return Container.InstantiatePrefabForComponent<T>(prefab, parent);
+            var go = Container.InstantiatePrefabForComponent<T>(prefab, parent);
+
+            if (!worldPositionStays)
+            {
+                go.transform.localPosition = Vector3.zero;
+            }
+
+            return go;
         }
     }
 }

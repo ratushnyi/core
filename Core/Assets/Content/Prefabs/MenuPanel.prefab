@@ -50,8 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dc09836ef19473d86dabeac201fc76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showInstantly: 0
-  _newGameScene: MainMenu
+  _showInstantly: 1
   _continueButton: {fileID: 584586837724921282}
   _newGameButton: {fileID: 9219364479001395491}
   _exitButton: {fileID: 5160088270977002645}

@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TendedTarsier.Core.Modules.General;
@@ -28,28 +27,27 @@ namespace TendedTarsier.Core.Modules.Menu
         private ProfileService _profileService;
         private ModuleService _moduleService;
         private GeneralProfile _generalProfile;
-        private MenuConfig _menuConfig;
 
         [Inject]
         private void Construct(
-            MenuConfig menuConfig,
             GeneralProfile generalProfile,
             ProfileService profileService,
             ModuleService moduleService,
             EventSystem eventSystem)
         {
-            _menuConfig = menuConfig;
             _generalProfile = generalProfile;
             _profileService = profileService;
             _moduleService = moduleService;
             _eventSystem = eventSystem;
         }
 
-        protected override void Initialize()
+        public override async UniTask InitializeAsync()
         {
-            base.Initialize();
+            await base.InitializeAsync();
 
             InitButtons();
+            await ShowButtons();
+            SubscribeButtons();
         }
 
         private void InitButtons()
@@ -61,7 +59,14 @@ namespace TendedTarsier.Core.Modules.Menu
             _eventSystem.SetSelectedGameObject(_continueButton.interactable ? _continueButton.gameObject : _newGameButton.gameObject);
         }
 
-        public async UniTask ShowButtons()
+        private void SubscribeButtons()
+        {
+            _continueButton.OnClickAsObservable().Subscribe(_ => OnContinueButtonClick()).AddTo(CompositeDisposable);
+            _newGameButton.OnClickAsObservable().Subscribe(_ => OnNewGameButtonClick()).AddTo(CompositeDisposable);
+            _exitButton.OnClickAsObservable().Subscribe(_ => OnExitButtonClick()).AddTo(CompositeDisposable);
+        }
+
+        private async UniTask ShowButtons()
         {
             var sequence = DOTween.Sequence();
             sequence.Join(_continueButton.targetGraphic.DOColor(Color.white, _fadeOutDuration));
@@ -72,10 +77,6 @@ namespace TendedTarsier.Core.Modules.Menu
             CompositeDisposable.Add(Disposable.Create(() => sequence.Kill()));
 
             await sequence.ToUniTask();
-
-            _continueButton.OnClickAsObservable().Subscribe(_ => OnContinueButtonClick()).AddTo(CompositeDisposable);
-            _newGameButton.OnClickAsObservable().Subscribe(_ => OnNewGameButtonClick()).AddTo(CompositeDisposable);
-            _exitButton.OnClickAsObservable().Subscribe(_ => OnExitButtonClick()).AddTo(CompositeDisposable);
         }
 
         private void OnContinueButtonClick()
