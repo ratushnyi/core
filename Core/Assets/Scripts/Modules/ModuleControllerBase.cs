@@ -1,4 +1,6 @@
+using System;
 using TendedTarsier.Core.Services.Modules;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +10,7 @@ namespace TendedTarsier.Core.Modules
     {
         [Inject] protected ModuleService ModuleService { get; set; }
         [Inject] protected DiContainer Container { get; set; }
+        protected readonly CompositeDisposable CompositeDisposable =  new();
 
         protected new T Instantiate<T>(T prefab, Transform parent = null, bool worldPositionStays = true) where T : Component
         {
@@ -19,6 +22,11 @@ namespace TendedTarsier.Core.Modules
             }
 
             return go;
+        }
+
+        private void OnDestroy()
+        {
+            CompositeDisposable.Dispose();
         }
     }
 }

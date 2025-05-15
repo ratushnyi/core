@@ -6,69 +6,6 @@
             "id": "60439d12-88e2-438c-86e6-2bbbc4be5f88",
             "actions": [
                 {
-                    "name": "LeftStick",
-                    "type": "Value",
-                    "id": "abd02a35-fc0c-4529-9990-17f07490fc77",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "RightStick",
-                    "type": "Value",
-                    "id": "abf81856-b5cf-461d-9baa-254e3128e1fb",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "DPad",
-                    "type": "Value",
-                    "id": "a5f3d292-2b46-4ab4-94b3-c7559eca8446",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "ButtonA",
-                    "type": "Button",
-                    "id": "6a14bf71-664e-4533-b78e-67053e0add9d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ButtonB",
-                    "type": "Button",
-                    "id": "1e7385af-12dc-4363-95a3-7b5178c7b239",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ButtonX",
-                    "type": "Button",
-                    "id": "8bedf50c-47d5-4107-b846-eb80481b3ba3",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ButtonY",
-                    "type": "Button",
-                    "id": "6948f76c-ea8d-4c65-b6f8-b347aba4ecdc",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Menu",
                     "type": "Button",
                     "id": "34a97186-1a67-4b87-8f5c-e1b0030a53aa",
@@ -78,181 +15,43 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Gyroscope",
+                    "name": "Map",
+                    "type": "Button",
+                    "id": "8e7a9c40-1aeb-4c1e-8945-4371f43a4634",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Direction",
                     "type": "Value",
-                    "id": "0c73a175-ad08-4ef4-9096-25cdbbc34edb",
-                    "expectedControlType": "Vector3",
+                    "id": "230d5891-f51e-412b-93c7-f7b4f2e40010",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Speed",
+                    "type": "Value",
+                    "id": "56cab4f0-0264-4afa-a145-4a7334210d7e",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Enter",
+                    "type": "Button",
+                    "id": "edb03ade-d094-452f-815c-c53e2bf1277a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "f3b0830c-fe5c-4af0-97cb-a9814563f9f3",
-                    "path": "<Gamepad>/leftStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LeftStick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "WASD",
-                    "id": "64dbef17-8e26-49f0-a081-7cbd7110e0e6",
-                    "path": "Dpad",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LeftStick",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "c624fb83-abd5-4f23-aa73-af6f37975163",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LeftStick",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "7a90c359-a5dc-4a02-9e61-11519f8544b5",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LeftStick",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "67d7c755-93bb-4e44-ac01-4cbec5013467",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LeftStick",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "734979a2-ae20-4799-8b00-d7ba359fe822",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LeftStick",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "f414280d-d1cb-4bba-9af8-f8b1c3f1f3da",
-                    "path": "/<GamePad>/A",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ButtonA",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d20cfb18-7ce5-48ea-bb79-63943a8781e9",
-                    "path": "/<GamePad>/B",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ButtonB",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "45dca7ec-549e-4606-a0c7-fedf71fda32c",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ButtonB",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c1521496-a266-4ece-a5e3-e1ff62ad9177",
-                    "path": "/<GamePad>/X",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ButtonX",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b28e9cc0-569b-4021-a018-4fcad3817d5c",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ButtonX",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0326f32d-3bf4-4362-85b1-bf614045b580",
-                    "path": "/<GamePad>/Y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ButtonY",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4a24bd80-a7c6-4400-905a-2d04e823c7bc",
-                    "path": "<Keyboard>/i",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ButtonY",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c30728d6-51cd-407c-9ba8-55289291ef2e",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RightStick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "53d66ab9-2dc6-45d1-bf30-2b11fac1b9a1",
-                    "path": "<Gamepad>/dpad",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DPad",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "db81607b-0260-499f-9023-1d459172bc31",
@@ -277,12 +76,67 @@
                 },
                 {
                     "name": "",
-                    "id": "3d6ac9a4-a45b-4629-b834-3ae34030cae6",
-                    "path": "<Gyroscope>/angularVelocity",
+                    "id": "a3139aa9-319c-4899-8b9f-74f9f873cd2f",
+                    "path": "<Keyboard>/m",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Gyroscope",
+                    "action": "Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b92b86c9-7898-4b43-b5bc-b0816b94dc15",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0b5b620-8c48-4e22-b5a1-7a21ecae05e1",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bde91772-a0e3-473a-83b2-5686e3952b4e",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Speed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "17d40c87-8af1-41d3-aab4-d302d8cf0453",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Enter",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a1a4cb2-3bd6-44b5-8820-b07277572eb0",
+                    "path": "<XInputController>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Enter",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
