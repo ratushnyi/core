@@ -68,15 +68,22 @@ namespace TendedTarsier.Core.Modules.Menu
 
         private async UniTask ShowButtons()
         {
-            var sequence = DOTween.Sequence();
-            sequence.Join(_continueButton.targetGraphic.DOColor(Color.white, _fadeOutDuration));
-            sequence.Join(_newGameButton.targetGraphic.DOColor(Color.white, _fadeOutDuration));
-            sequence.Join(_exitButton.targetGraphic.DOColor(Color.white, _fadeOutDuration));
-            sequence.SetEase(_fadeOutCurve);
+            var showSequence = createSequence();
+            
+            CompositeDisposable.Add(Disposable.Create(() => showSequence.Kill()));
 
-            CompositeDisposable.Add(Disposable.Create(() => sequence.Kill()));
+            await showSequence.ToUniTask();
 
-            await sequence.ToUniTask();
+            Sequence createSequence()
+            {
+                var sequence = DOTween.Sequence();
+                sequence.Join(_continueButton.targetGraphic.DOColor(Color.white, _fadeOutDuration));
+                sequence.Join(_newGameButton.targetGraphic.DOColor(Color.white, _fadeOutDuration));
+                sequence.Join(_exitButton.targetGraphic.DOColor(Color.white, _fadeOutDuration));
+                sequence.SetEase(_fadeOutCurve);
+                
+                return sequence;
+            }
         }
 
         private void OnContinueButtonClick()
@@ -89,6 +96,7 @@ namespace TendedTarsier.Core.Modules.Menu
         {
             Dispose();
             _profileService.ClearAll();
+            _generalProfile.StartNewGame();
             _moduleService.LoadModule(_generalProfile.LastScene).Forget();
         }
 

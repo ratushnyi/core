@@ -19,6 +19,10 @@ namespace TendedTarsier.Core.Services.Profile
             _profileService = profileService;
         }
 
+        public virtual void RegisterFormatters()
+        {
+        }
+
         public virtual void OnSectionCreated()
         {
         }

@@ -8,6 +8,7 @@ namespace TendedTarsier.Core.Modules.Loader
     public class LoaderModuleController : ModuleControllerBase
     {
         [SerializeField] private float _loadingDelay = 2f;
+
         public void Start()
         {
             LoadModule().Forget();

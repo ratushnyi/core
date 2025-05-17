@@ -6,7 +6,7 @@ using Zenject;
 
 namespace TendedTarsier.Core.Modules
 {
-    public abstract class ModuleControllerBase : MonoBehaviour
+    public abstract class ModuleControllerBase : MonoBehaviour, IDisposable
     {
         [Inject] protected ModuleService ModuleService { get; set; }
         [Inject] protected DiContainer Container { get; set; }
@@ -24,7 +24,7 @@ namespace TendedTarsier.Core.Modules
             return go;
         }
 
-        private void OnDestroy()
+        public virtual void Dispose()
         {
             CompositeDisposable.Dispose();
         }

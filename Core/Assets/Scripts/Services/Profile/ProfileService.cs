@@ -33,10 +33,6 @@ namespace TendedTarsier.Core.Services.Profile
 
         private void RegisterFormatters()
         {
-            MemoryPackFormatterProvider.Register(new ReactivePropertyFormatter<DateTime?>());
-            MemoryPackFormatterProvider.Register(new ReactivePropertyFormatter<DateTime>());
-            MemoryPackFormatterProvider.Register(new ReactivePropertyFormatter<TimeSpan>());
-            MemoryPackFormatterProvider.Register(new ReactivePropertyFormatter<List<int>>());
             MemoryPackFormatterProvider.Register(new ReactivePropertyFormatter<bool>());
             MemoryPackFormatterProvider.Register(new ReactivePropertyFormatter<string>());
             MemoryPackFormatterProvider.Register(new ReactivePropertyFormatter<int>());
@@ -49,13 +45,17 @@ namespace TendedTarsier.Core.Services.Profile
             MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, string>());
             MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, int>());
             MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, float>());
+            MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, ReactiveProperty<bool>>());
+            MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, ReactiveProperty<string>>());
             MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, ReactiveProperty<int>>());
+            MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, ReactiveProperty<float>>());
         }
 
         private void LoadSections()
         {
             foreach (var profile in _profiles)
             {
+                profile.RegisterFormatters();
                 LoadSection(profile);
             }
         }
@@ -72,8 +72,9 @@ namespace TendedTarsier.Core.Services.Profile
 
                     TypeExtensions.PopulateObject(profile, referenceObject);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Debug.LogException(e);
                     CreateSection(profile);
                 }
             }

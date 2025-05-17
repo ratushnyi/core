@@ -17,17 +17,16 @@ namespace TendedTarsier.Core.Modules.General
         [MemoryPackOrder(1)]
         public string LastScene { get; set; }
 
-        public override void OnSectionCreated()
-        {
-            base.OnSectionCreated();
-
-            LastScene = _generalConfig.NewGameScene;
-        }
-
         [Inject]
         private void Construct(GeneralConfig generalConfig)
         {
             _generalConfig = generalConfig;
+        }
+
+        public void StartNewGame()
+        {
+            FirstStartDate = DateTime.UtcNow;
+            LastScene = _generalConfig.NewGameScene;
         }
     }
 }

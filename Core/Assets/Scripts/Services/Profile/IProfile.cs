@@ -4,6 +4,7 @@ namespace TendedTarsier.Core.Services.Profile
     {
         string Name { get; }
         void Init(ProfileService profileService);
+        void RegisterFormatters();
         void OnSectionLoaded();
         void OnSectionCreated();
         void Clear();

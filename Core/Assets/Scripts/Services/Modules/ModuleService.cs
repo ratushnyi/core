@@ -11,23 +11,19 @@ namespace TendedTarsier.Core.Services.Modules
     public class ModuleService : ServiceBase
     {
         private readonly PanelLoader<GeneralLoadingPanel> _loadingPanel;
-        public ModuleControllerBase CurrentModule {get; private set;}
+        public ModuleControllerBase CurrentModule { get; private set; }
 
         public ModuleService(PanelLoader<GeneralLoadingPanel> loadingPanel)
         {
             _loadingPanel = loadingPanel;
         }
-        
-        protected override void Initialize()
-        {
-            base.Initialize();
-            CurrentModule = SceneManager.GetActiveScene().GetRootGameObjects()[0].GetComponent<ModuleControllerBase>();
-        }
-        
+
         public async UniTask LoadModule(string sceneName)
         {
+            CurrentModule?.Dispose();
             await _loadingPanel.Show();
-            SceneManager.LoadScene(sceneName);
+            await SceneManager.LoadSceneAsync(sceneName).ToUniTask();
+            CurrentModule = SceneManager.GetActiveScene().GetRootGameObjects()[0].GetComponent<ModuleControllerBase>();
             await _loadingPanel.Hide();
         }
     }
