@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
@@ -9,8 +10,10 @@ namespace TendedTarsier.Core.Panels
         [SerializeField]
         private bool _showInstantly;
         public virtual bool ShowInstantly => _showInstantly;
+        public IObservable<bool> Hide => _hide;
+        private readonly ISubject<bool> _hide = new Subject<bool>();
 
-        protected readonly CompositeDisposable CompositeDisposable = new();
+        public readonly CompositeDisposable CompositeDisposable = new();
 
         public virtual UniTask InitializeAsync()
         {
@@ -43,6 +46,11 @@ namespace TendedTarsier.Core.Panels
         {
             gameObject.SetActive(false);
             return UniTask.CompletedTask;
+        }
+
+        public void PerformHide(bool force)
+        {
+            _hide.OnNext(force);
         }
     }
 }

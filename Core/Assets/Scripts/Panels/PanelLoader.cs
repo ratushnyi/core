@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -28,6 +29,7 @@ namespace TendedTarsier.Core.Panels
             _prefab = prefab;
             _canvas = canvas;
             _container = container;
+            _prefab.Hide.Subscribe(t => Hide(t).Forget()).AddTo(_prefab.CompositeDisposable);
 
             if (_prefab.ShowInstantly)
             {
