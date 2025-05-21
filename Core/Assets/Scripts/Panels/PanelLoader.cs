@@ -20,6 +20,7 @@ namespace TendedTarsier.Core.Panels
         private readonly T _prefab;
         private readonly Canvas _canvas;
         private readonly DiContainer _container;
+        private UniTaskCompletionSource _completionSource;
 
         public T Instance { get; private set; }
         public State PanelState { get; private set; }
@@ -29,7 +30,6 @@ namespace TendedTarsier.Core.Panels
             _prefab = prefab;
             _canvas = canvas;
             _container = container;
-            _prefab.Hide.Subscribe(t => Hide(t).Forget()).AddTo(_prefab.CompositeDisposable);
 
             if (_prefab.ShowInstantly)
             {
@@ -37,7 +37,7 @@ namespace TendedTarsier.Core.Panels
             }
         }
 
-        public async UniTask<T> Show(bool immediate = false)
+        public async UniTask<T> Show(bool immediate = false, bool waitForCompletion = true)
         {
             if (Instance != null)
             {
@@ -47,16 +47,30 @@ namespace TendedTarsier.Core.Panels
 
             PanelState = State.Showing;
             await Load();
-            await Instance.InitializeAsync();
-            if (!immediate)
+
+            if (waitForCompletion)
             {
-                await Instance.ShowAnimation();
+                await awaitCompletion();
             }
-            PanelState = State.Show;
+            else
+            {
+                awaitCompletion().Forget();
+            }
+            
             return Instance;
+
+            async UniTask awaitCompletion()
+            {
+                await Instance.InitializeAsync();
+                if (!immediate)
+                {
+                    await Instance.ShowAnimation();
+                }
+                PanelState = State.Show;
+            }
         }
 
-        public async UniTask Hide(bool immediate = false)
+        public async UniTask Hide(bool immediate = false, bool waitForCompletion = false)
         {
             if (Instance == null)
             {
@@ -69,14 +83,35 @@ namespace TendedTarsier.Core.Panels
             {
                 await Instance.HideAnimation();
             }
-            await Instance.DisposeAsync();
-            await Unload();
             PanelState = State.Hide;
+            _completionSource.TrySetResult();
+
+            if (waitForCompletion)
+            {
+                await awaitCompletion();
+            }
+            else
+            {
+                awaitCompletion().Forget();
+            }
+
+            async UniTask awaitCompletion()
+            {
+                await Instance.DisposeAsync();
+                await Unload();
+            }
+        }
+
+        public async UniTask WaitForHide()
+        {
+            await _completionSource.Task;
         }
 
         private UniTask Load()
         {
             Instance = _container.InstantiatePrefabForComponent<T>(_prefab, _canvas.transform);
+            Instance.Hide.Subscribe(t => Hide(t).Forget()).AddTo(Instance.CompositeDisposable);
+            _completionSource = new UniTaskCompletionSource();
             return UniTask.CompletedTask;
         }
 

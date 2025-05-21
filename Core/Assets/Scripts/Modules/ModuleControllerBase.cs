@@ -20,6 +20,8 @@ namespace TendedTarsier.Core.Modules
             {
                 go.transform.localPosition = Vector3.zero;
             }
+            
+            Container.BindInstance(go);
 
             return go;
         }

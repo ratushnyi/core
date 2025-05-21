@@ -19,10 +19,6 @@ namespace TendedTarsier.Core.Modules.Menu
         [SerializeField] private Button _newGameButton;
         [SerializeField] private Button _exitButton;
 
-        [Header("Animation")]
-        [SerializeField] private float _fadeOutDuration = 0.5f;
-        [SerializeField] public Ease _fadeOutCurve = Ease.InSine;
-
         private EventSystem _eventSystem;
         private ProfileService _profileService;
         private ModuleService _moduleService;
@@ -41,10 +37,8 @@ namespace TendedTarsier.Core.Modules.Menu
             _eventSystem = eventSystem;
         }
 
-        public override async UniTask InitializeAsync()
+        public override async UniTask ShowAnimation()
         {
-            await base.InitializeAsync();
-
             InitButtons();
             await ShowButtons();
             SubscribeButtons();
@@ -77,10 +71,10 @@ namespace TendedTarsier.Core.Modules.Menu
             Sequence createSequence()
             {
                 var sequence = DOTween.Sequence();
-                sequence.Join(_continueButton.targetGraphic.DOColor(Color.white, _fadeOutDuration));
-                sequence.Join(_newGameButton.targetGraphic.DOColor(Color.white, _fadeOutDuration));
-                sequence.Join(_exitButton.targetGraphic.DOColor(Color.white, _fadeOutDuration));
-                sequence.SetEase(_fadeOutCurve);
+                sequence.Join(_continueButton.targetGraphic.DOColor(Color.white, AnimationDuration));
+                sequence.Join(_newGameButton.targetGraphic.DOColor(Color.white, AnimationDuration));
+                sequence.Join(_exitButton.targetGraphic.DOColor(Color.white, AnimationDuration));
+                sequence.SetEase(AnimationEase);
                 
                 return sequence;
             }
