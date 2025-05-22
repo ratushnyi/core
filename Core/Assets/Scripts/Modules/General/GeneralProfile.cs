@@ -12,7 +12,7 @@ namespace TendedTarsier.Core.Modules.General
         public override string Name => "General";
 
         [MemoryPackOrder(0)]
-        public DateTime? FirstStartDate { get; set; }
+        public DateTime FirstStartDate { get; set; }
 
         [MemoryPackOrder(1)]
         public string LastScene { get; set; }

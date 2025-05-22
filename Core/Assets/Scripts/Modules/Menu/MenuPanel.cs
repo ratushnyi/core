@@ -49,7 +49,7 @@ namespace TendedTarsier.Core.Modules.Menu
             _continueButton.targetGraphic.color = Color.clear;
             _newGameButton.targetGraphic.color = Color.clear;
             _exitButton.targetGraphic.color = Color.clear;
-            _continueButton.interactable = _generalProfile.FirstStartDate != null;
+            _continueButton.interactable = _generalProfile.FirstStartDate != default;
             _eventSystem.SetSelectedGameObject(_continueButton.interactable ? _continueButton.gameObject : _newGameButton.gameObject);
         }
 

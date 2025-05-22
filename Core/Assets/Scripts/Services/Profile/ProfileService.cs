@@ -16,6 +16,8 @@ namespace TendedTarsier.Core.Services.Profile
     {
         public static readonly string ProfilesDirectory = Path.Combine(Application.persistentDataPath, GeneralConstants.ProfilesDirectory);
 
+        public IObservable<Unit> ClearAllObservable => _clearAllSubject;
+        private readonly ISubject<Unit> _clearAllSubject = new Subject<Unit>();
         private readonly List<IProfile> _profiles;
 
         public ProfileService(List<IProfile> profiles)
@@ -137,6 +139,7 @@ namespace TendedTarsier.Core.Services.Profile
             {
                 profile.Clear();
             }
+            _clearAllSubject.OnNext(Unit.Default);
         }
 
         public override void Dispose()

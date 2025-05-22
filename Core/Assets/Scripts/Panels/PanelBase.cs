@@ -87,7 +87,7 @@ namespace TendedTarsier.Core.Panels
             _canvasGroup.alpha = 1;
         }
 
-        public void PerformHide(bool force)
+        public void PerformHide(bool force =  false)
         {
             _hide.OnNext(force);
         }
