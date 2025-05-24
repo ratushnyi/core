@@ -39,18 +39,6 @@ namespace TendedTarsier.Core.Panels
         protected virtual void Initialize()
         {
         }
-
-        public virtual UniTask DisposeAsync()
-        {
-            Dispose();
-            return UniTask.CompletedTask;
-        }
-
-        protected virtual void Dispose()
-        {
-            CompositeDisposable.Dispose();
-        }
-
         public virtual async UniTask ShowAnimation()
         {
             gameObject.SetActive(true);
@@ -90,6 +78,16 @@ namespace TendedTarsier.Core.Panels
         public void PerformHide(bool force =  false)
         {
             _hide.OnNext(force);
+        }
+
+        protected virtual void Dispose()
+        {
+            CompositeDisposable.Dispose();
+        }
+
+        private void OnDestroy()
+        {
+            Dispose();
         }
     }
 }

@@ -79,7 +79,6 @@ namespace TendedTarsier.Core.Panels
             }
 
             PanelState = State.Hiding;
-            await Instance.DisposeAsync();
             if (!immediate)
             {
                 await Instance.HideAnimation();
@@ -113,6 +112,7 @@ namespace TendedTarsier.Core.Panels
         private UniTask Unload()
         {
             Object.DestroyImmediate(Instance.gameObject);
+            Instance = null;
             return UniTask.CompletedTask;
         }
     }

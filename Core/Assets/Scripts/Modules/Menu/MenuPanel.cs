@@ -82,13 +82,11 @@ namespace TendedTarsier.Core.Modules.Menu
 
         private void OnContinueButtonClick()
         {
-            Dispose();
             _moduleService.LoadModule(_generalProfile.LastScene).Forget();
         }
 
         private void OnNewGameButtonClick()
         {
-            Dispose();
             _profileService.ClearAll();
             _generalProfile.StartNewGame();
             _moduleService.LoadModule(_generalProfile.LastScene).Forget();
@@ -96,7 +94,6 @@ namespace TendedTarsier.Core.Modules.Menu
 
         private void OnExitButtonClick()
         {
-            Dispose();
             Application.Quit();
         }
     }
