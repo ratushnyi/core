@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UniRx;
@@ -37,7 +39,7 @@ namespace TendedTarsier.Core.Panels
             }
         }
 
-        public async UniTask<T> Show(bool immediate = false, bool waitForCompletion = true)
+        public async UniTask<T> Show(bool immediate = false, bool waitForCompletion = true, IEnumerable<object> extraArgs = null)
         {
             if (Instance != null)
             {
@@ -46,7 +48,8 @@ namespace TendedTarsier.Core.Panels
             }
 
             PanelState = State.Showing;
-            await Load();
+            extraArgs ??= Array.Empty<object>();
+            await Load(extraArgs);
 
             if (waitForCompletion)
             {
@@ -56,7 +59,7 @@ namespace TendedTarsier.Core.Panels
             {
                 awaitCompletion().Forget();
             }
-            
+
             return Instance;
 
             async UniTask awaitCompletion()
@@ -101,9 +104,9 @@ namespace TendedTarsier.Core.Panels
             await _completionSource.Task;
         }
 
-        private UniTask Load()
+        private UniTask Load(IEnumerable<object> extraArgs)
         {
-            Instance = _container.InstantiatePrefabForComponent<T>(_prefab, _canvas.transform);
+            Instance = _container.InstantiatePrefabForComponent<T>(_prefab, _canvas.transform, extraArgs);
             Instance.Hide.Subscribe(t => Hide(t).Forget()).AddTo(Instance.CompositeDisposable);
             _completionSource = new UniTaskCompletionSource();
             return UniTask.CompletedTask;
@@ -111,7 +114,7 @@ namespace TendedTarsier.Core.Panels
 
         private UniTask Unload()
         {
-            Object.DestroyImmediate(Instance.gameObject);
+            UnityEngine.Object.DestroyImmediate(Instance.gameObject);
             Instance = null;
             return UniTask.CompletedTask;
         }
