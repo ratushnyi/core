@@ -71,6 +71,15 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Overview"",
+                    ""type"": ""Button"",
+                    ""id"": ""c19c9b0c-b56b-483d-8a38-edf8fab7ea3c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -159,6 +168,28 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Enter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""763dfd61-50a6-433a-b1ba-47f614c9d158"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Overview"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7767ba5f-4f59-44be-ad5f-d686121bc004"",
+                    ""path"": ""<XInputController>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Overview"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -613,6 +644,7 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
         m_Gameplay_Direction = m_Gameplay.FindAction("Direction", throwIfNotFound: true);
         m_Gameplay_Speed = m_Gameplay.FindAction("Speed", throwIfNotFound: true);
         m_Gameplay_Enter = m_Gameplay.FindAction("Enter", throwIfNotFound: true);
+        m_Gameplay_Overview = m_Gameplay.FindAction("Overview", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -691,6 +723,7 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Direction;
     private readonly InputAction m_Gameplay_Speed;
     private readonly InputAction m_Gameplay_Enter;
+    private readonly InputAction m_Gameplay_Overview;
     public struct GameplayActions
     {
         private @GameplayInput m_Wrapper;
@@ -700,6 +733,7 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
         public InputAction @Direction => m_Wrapper.m_Gameplay_Direction;
         public InputAction @Speed => m_Wrapper.m_Gameplay_Speed;
         public InputAction @Enter => m_Wrapper.m_Gameplay_Enter;
+        public InputAction @Overview => m_Wrapper.m_Gameplay_Overview;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -724,6 +758,9 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
             @Enter.started += instance.OnEnter;
             @Enter.performed += instance.OnEnter;
             @Enter.canceled += instance.OnEnter;
+            @Overview.started += instance.OnOverview;
+            @Overview.performed += instance.OnOverview;
+            @Overview.canceled += instance.OnOverview;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -743,6 +780,9 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
             @Enter.started -= instance.OnEnter;
             @Enter.performed -= instance.OnEnter;
             @Enter.canceled -= instance.OnEnter;
+            @Overview.started -= instance.OnOverview;
+            @Overview.performed -= instance.OnOverview;
+            @Overview.canceled -= instance.OnOverview;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -885,6 +925,7 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
         void OnDirection(InputAction.CallbackContext context);
         void OnSpeed(InputAction.CallbackContext context);
         void OnEnter(InputAction.CallbackContext context);
+        void OnOverview(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

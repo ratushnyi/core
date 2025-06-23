@@ -31,6 +31,10 @@ namespace TendedTarsier.Core.Services.Input
         public IObservable<InputAction.CallbackContext> OnEnterButtonPerformed { get; private set; }
         public IObservable<InputAction.CallbackContext> OnEnterButtonCanceled { get; private set; }
 
+        public IObservable<InputAction.CallbackContext> OnOverviewButtonStarted { get; private set; }
+        public IObservable<InputAction.CallbackContext> OnOverviewButtonPerformed { get; private set; }
+        public IObservable<InputAction.CallbackContext> OnOverviewButtonCanceled { get; private set; }
+
         public InputService(GameplayInput gameplayInput)
         {
             _gameplayInput = gameplayInput;
@@ -52,6 +56,7 @@ namespace TendedTarsier.Core.Services.Input
             (OnMapButtonStarted, OnMapButtonPerformed, OnMapButtonCanceled) = _gameplayInput.Gameplay.Map.ToObservable();
             (OnMenuButtonStarted, OnMenuButtonPerformed, OnMenuButtonCanceled) = _gameplayInput.Gameplay.Menu.ToObservable();
             (OnEnterButtonStarted, OnEnterButtonPerformed, OnEnterButtonCanceled) = _gameplayInput.Gameplay.Enter.ToObservable();
+            (OnOverviewButtonStarted, OnOverviewButtonPerformed, OnOverviewButtonCanceled) = _gameplayInput.Gameplay.Overview.ToObservable();
 
             _gameplayInput.Gameplay.Enable();
         }
