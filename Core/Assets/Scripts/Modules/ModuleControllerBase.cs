@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using TendedTarsier.Core.Services.Modules;
 using UniRx;
 using UnityEngine;
@@ -29,6 +30,11 @@ namespace TendedTarsier.Core.Modules
         public virtual void Dispose()
         {
             CompositeDisposable.Dispose();
+        }
+
+        public virtual UniTask Initialize()
+        {
+            return UniTask.CompletedTask;
         }
     }
 }

@@ -24,6 +24,7 @@ namespace TendedTarsier.Core.Services.Modules
             await _loadingPanel.Show();
             await SceneManager.LoadSceneAsync(sceneName).ToUniTask();
             CurrentModule = SceneManager.GetActiveScene().GetRootGameObjects()[0].GetComponent<ModuleControllerBase>();
+            await CurrentModule.Initialize();
             await _loadingPanel.Hide();
         }
     }
