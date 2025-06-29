@@ -46,7 +46,7 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Direction"",
+                    ""name"": ""Movement"",
                     ""type"": ""Value"",
                     ""id"": ""230d5891-f51e-412b-93c7-f7b4f2e40010"",
                     ""expectedControlType"": ""Vector2"",
@@ -55,7 +55,7 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Speed"",
+                    ""name"": ""Aim"",
                     ""type"": ""Value"",
                     ""id"": ""56cab4f0-0264-4afa-a145-4a7334210d7e"",
                     ""expectedControlType"": ""Vector2"",
@@ -134,7 +134,7 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Direction"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -145,7 +145,7 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Speed"",
+                    ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -641,8 +641,8 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Menu = m_Gameplay.FindAction("Menu", throwIfNotFound: true);
         m_Gameplay_Map = m_Gameplay.FindAction("Map", throwIfNotFound: true);
-        m_Gameplay_Direction = m_Gameplay.FindAction("Direction", throwIfNotFound: true);
-        m_Gameplay_Speed = m_Gameplay.FindAction("Speed", throwIfNotFound: true);
+        m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
+        m_Gameplay_Aim = m_Gameplay.FindAction("Aim", throwIfNotFound: true);
         m_Gameplay_Enter = m_Gameplay.FindAction("Enter", throwIfNotFound: true);
         m_Gameplay_Overview = m_Gameplay.FindAction("Overview", throwIfNotFound: true);
         // UI
@@ -720,8 +720,8 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Menu;
     private readonly InputAction m_Gameplay_Map;
-    private readonly InputAction m_Gameplay_Direction;
-    private readonly InputAction m_Gameplay_Speed;
+    private readonly InputAction m_Gameplay_Movement;
+    private readonly InputAction m_Gameplay_Aim;
     private readonly InputAction m_Gameplay_Enter;
     private readonly InputAction m_Gameplay_Overview;
     public struct GameplayActions
@@ -730,8 +730,8 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
         public GameplayActions(@GameplayInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Menu => m_Wrapper.m_Gameplay_Menu;
         public InputAction @Map => m_Wrapper.m_Gameplay_Map;
-        public InputAction @Direction => m_Wrapper.m_Gameplay_Direction;
-        public InputAction @Speed => m_Wrapper.m_Gameplay_Speed;
+        public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
+        public InputAction @Aim => m_Wrapper.m_Gameplay_Aim;
         public InputAction @Enter => m_Wrapper.m_Gameplay_Enter;
         public InputAction @Overview => m_Wrapper.m_Gameplay_Overview;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
@@ -749,12 +749,12 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
             @Map.started += instance.OnMap;
             @Map.performed += instance.OnMap;
             @Map.canceled += instance.OnMap;
-            @Direction.started += instance.OnDirection;
-            @Direction.performed += instance.OnDirection;
-            @Direction.canceled += instance.OnDirection;
-            @Speed.started += instance.OnSpeed;
-            @Speed.performed += instance.OnSpeed;
-            @Speed.canceled += instance.OnSpeed;
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @Aim.started += instance.OnAim;
+            @Aim.performed += instance.OnAim;
+            @Aim.canceled += instance.OnAim;
             @Enter.started += instance.OnEnter;
             @Enter.performed += instance.OnEnter;
             @Enter.canceled += instance.OnEnter;
@@ -771,12 +771,12 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
             @Map.started -= instance.OnMap;
             @Map.performed -= instance.OnMap;
             @Map.canceled -= instance.OnMap;
-            @Direction.started -= instance.OnDirection;
-            @Direction.performed -= instance.OnDirection;
-            @Direction.canceled -= instance.OnDirection;
-            @Speed.started -= instance.OnSpeed;
-            @Speed.performed -= instance.OnSpeed;
-            @Speed.canceled -= instance.OnSpeed;
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @Aim.started -= instance.OnAim;
+            @Aim.performed -= instance.OnAim;
+            @Aim.canceled -= instance.OnAim;
             @Enter.started -= instance.OnEnter;
             @Enter.performed -= instance.OnEnter;
             @Enter.canceled -= instance.OnEnter;
@@ -922,8 +922,8 @@ public partial class @GameplayInput: IInputActionCollection2, IDisposable
     {
         void OnMenu(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
-        void OnDirection(InputAction.CallbackContext context);
-        void OnSpeed(InputAction.CallbackContext context);
+        void OnMovement(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
         void OnEnter(InputAction.CallbackContext context);
         void OnOverview(InputAction.CallbackContext context);
     }

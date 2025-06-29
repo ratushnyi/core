@@ -9,15 +9,16 @@ namespace TendedTarsier.Core.Services.Input
     public class InputService : ServiceBase
     {
         private readonly GameplayInput _gameplayInput;
-        public InputAction Speed;
-        public IObservable<InputAction.CallbackContext> OnSpeedStarted { get; private set; }
-        public IObservable<InputAction.CallbackContext> OnSpeedPerformed { get; private set; }
-        public IObservable<InputAction.CallbackContext> OnSpeedCanceled { get; private set; }
         
-        public InputAction Direction;
-        public IObservable<InputAction.CallbackContext> OnDirectionStarted { get; private set; }
-        public IObservable<InputAction.CallbackContext> OnDirectionPerformed { get; private set; }
-        public IObservable<InputAction.CallbackContext> OnDirectionCanceled { get; private set; }
+        public InputAction Aim;
+        public IObservable<InputAction.CallbackContext> OnAimStarted { get; private set; }
+        public IObservable<InputAction.CallbackContext> OnAimPerformed { get; private set; }
+        public IObservable<InputAction.CallbackContext> OnAimCanceled { get; private set; }
+        
+        public InputAction Movement;
+        public IObservable<InputAction.CallbackContext> OnMovementStarted { get; private set; }
+        public IObservable<InputAction.CallbackContext> OnMovementPerformed { get; private set; }
+        public IObservable<InputAction.CallbackContext> OnMovementCanceled { get; private set; }
         
         public IObservable<InputAction.CallbackContext> OnMenuButtonStarted { get; private set; }
         public IObservable<InputAction.CallbackContext> OnMenuButtonPerformed { get; private set; }
@@ -49,10 +50,10 @@ namespace TendedTarsier.Core.Services.Input
 
         private void InitInput()
         {
-            Speed = _gameplayInput.Gameplay.Speed;
-            (OnSpeedStarted, OnSpeedPerformed, OnSpeedCanceled) = _gameplayInput.Gameplay.Speed.ToObservable();
-            Direction = _gameplayInput.Gameplay.Direction;
-            (OnDirectionStarted, OnDirectionPerformed, OnDirectionCanceled) = _gameplayInput.Gameplay.Direction.ToObservable();
+            Aim = _gameplayInput.Gameplay.Aim;
+            (OnAimStarted, OnAimPerformed, OnAimCanceled) = _gameplayInput.Gameplay.Aim.ToObservable();
+            Movement = _gameplayInput.Gameplay.Movement;
+            (OnMovementStarted, OnMovementPerformed, OnMovementCanceled) = _gameplayInput.Gameplay.Movement.ToObservable();
             (OnMapButtonStarted, OnMapButtonPerformed, OnMapButtonCanceled) = _gameplayInput.Gameplay.Map.ToObservable();
             (OnMenuButtonStarted, OnMenuButtonPerformed, OnMenuButtonCanceled) = _gameplayInput.Gameplay.Menu.ToObservable();
             (OnEnterButtonStarted, OnEnterButtonPerformed, OnEnterButtonCanceled) = _gameplayInput.Gameplay.Enter.ToObservable();
