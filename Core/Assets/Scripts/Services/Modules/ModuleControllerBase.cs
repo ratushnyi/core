@@ -1,11 +1,10 @@
 using System;
 using Cysharp.Threading.Tasks;
-using TendedTarsier.Core.Services.Modules;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace TendedTarsier.Core.Modules
+namespace TendedTarsier.Core.Services.Modules
 {
     public abstract class ModuleControllerBase : MonoBehaviour, IDisposable
     {
@@ -32,9 +31,6 @@ namespace TendedTarsier.Core.Modules
             CompositeDisposable.Dispose();
         }
 
-        public virtual UniTask Initialize()
-        {
-            return UniTask.CompletedTask;
-        }
+        public abstract UniTask Initialize();
     }
 }

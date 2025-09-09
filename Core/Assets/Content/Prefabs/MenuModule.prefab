@@ -191,8 +191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e35003d7093e94880b8b6f7e95a5be4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _menuModuleController: {fileID: 704800639241967492}
-  _menuConfig: {fileID: 11400000, guid: f6435307a538f49379de4ce286bb7c92, type: 2}
+  _moduleController: {fileID: 704800639241967492}
+  <Config>k__BackingField: {fileID: 11400000, guid: e35fb290f5f18ff79aba5227104b0020, type: 2}
   _canvas: {fileID: 6368572181665773501}
 --- !u!1 &8939614071063051490
 GameObject:

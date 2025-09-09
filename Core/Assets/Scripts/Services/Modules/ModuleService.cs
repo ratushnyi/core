@@ -1,8 +1,9 @@
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
-using TendedTarsier.Core.Modules;
-using TendedTarsier.Core.Modules.General;
+using TendedTarsier.Core.Modules.Loading;
+using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Panels;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace TendedTarsier.Core.Services.Modules
@@ -10,22 +11,24 @@ namespace TendedTarsier.Core.Services.Modules
     [UsedImplicitly]
     public class ModuleService : ServiceBase
     {
-        private readonly PanelLoader<GeneralLoadingPanel> _loadingPanel;
+        private readonly PanelLoader<LoadingPanel> _loaderPanel;
+        private readonly ProjectProfile _projectProfile;
         public ModuleControllerBase CurrentModule { get; private set; }
 
-        public ModuleService(PanelLoader<GeneralLoadingPanel> loadingPanel)
+        public ModuleService(PanelLoader<LoadingPanel> loaderPanel, ProjectProfile projectProfile)
         {
-            _loadingPanel = loadingPanel;
+            _loaderPanel = loaderPanel;
+            _projectProfile = projectProfile;
         }
 
         public async UniTask LoadModule(string sceneName)
         {
             CurrentModule?.Dispose();
-            await _loadingPanel.Show();
+            await _loaderPanel.Show();
             await SceneManager.LoadSceneAsync(sceneName).ToUniTask();
-            CurrentModule = SceneManager.GetActiveScene().GetRootGameObjects()[0].GetComponent<ModuleControllerBase>();
+            CurrentModule = Object.FindFirstObjectByType<ModuleControllerBase>();
             await CurrentModule.Initialize();
-            await _loadingPanel.Hide();
+            await _loaderPanel.Hide();
         }
     }
 }

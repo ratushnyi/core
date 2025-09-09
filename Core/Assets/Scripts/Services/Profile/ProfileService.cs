@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
 using MemoryPack;
-using TendedTarsier.Core.Modules.General;
+using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Utilities.Extensions;
 using TendedTarsier.Core.Utilities.MemoryPack.FormatterProviders;
 using UniRx;
@@ -14,7 +14,7 @@ namespace TendedTarsier.Core.Services.Profile
     [UsedImplicitly]
     public class ProfileService : ServiceBase
     {
-        public static readonly string ProfilesDirectory = Path.Combine(Application.persistentDataPath, GeneralConstants.ProfilesDirectory);
+        public static readonly string ProfilesDirectory = Path.Combine(Application.persistentDataPath, ProjectConstants.ProfilesDirectory);
 
         public IObservable<Unit> ClearAllObservable => _clearAllSubject;
         private readonly ISubject<Unit> _clearAllSubject = new Subject<Unit>();

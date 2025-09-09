@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using TendedTarsier.Core.Modules.General;
+using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Modules;
 using TendedTarsier.Core.Services.Profile;
@@ -22,16 +22,19 @@ namespace TendedTarsier.Core.Modules.Menu
         private EventSystem _eventSystem;
         private ProfileService _profileService;
         private ModuleService _moduleService;
-        private GeneralProfile _generalProfile;
+        private ProjectProfile _projectProfile;
+        private MenuModuleConfig _menuModuleConfig;
 
         [Inject]
         private void Construct(
-            GeneralProfile generalProfile,
+            MenuModuleConfig menuModuleConfig,
+            ProjectProfile projectProfile,
             ProfileService profileService,
             ModuleService moduleService,
             EventSystem eventSystem)
         {
-            _generalProfile = generalProfile;
+            _menuModuleConfig = menuModuleConfig;
+            _projectProfile = projectProfile;
             _profileService = profileService;
             _moduleService = moduleService;
             _eventSystem = eventSystem;
@@ -49,7 +52,7 @@ namespace TendedTarsier.Core.Modules.Menu
             _continueButton.targetGraphic.color = Color.clear;
             _newGameButton.targetGraphic.color = Color.clear;
             _exitButton.targetGraphic.color = Color.clear;
-            _continueButton.interactable = _generalProfile.FirstStartDate != default;
+            _continueButton.interactable = !string.IsNullOrEmpty(_projectProfile.LastGameplayScene);
             _eventSystem.SetSelectedGameObject(_continueButton.interactable ? _continueButton.gameObject : _newGameButton.gameObject);
         }
 
@@ -82,14 +85,15 @@ namespace TendedTarsier.Core.Modules.Menu
 
         private void OnContinueButtonClick()
         {
-            _moduleService.LoadModule(_generalProfile.LastScene).Forget();
+            _moduleService.LoadModule(_projectProfile.LastGameplayScene).Forget();
         }
 
         private void OnNewGameButtonClick()
         {
             _profileService.ClearAll();
-            _generalProfile.StartNewGame();
-            _moduleService.LoadModule(_generalProfile.LastScene).Forget();
+            _projectProfile.LastGameplayScene = _menuModuleConfig.NewGameScene;
+            _projectProfile.Save();
+            _moduleService.LoadModule(_menuModuleConfig.NewGameScene).Forget();
         }
 
         private void OnExitButtonClick()

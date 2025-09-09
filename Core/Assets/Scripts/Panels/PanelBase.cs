@@ -49,10 +49,10 @@ namespace TendedTarsier.Core.Panels
                 _canvasGroup.alpha = 0;
 
                 _sequence?.Kill();
-                _sequence = DOTween.Sequence();
-                _sequence.Append(_canvasGroup.DOFade(1, AnimationDuration));
-                _sequence.Join(transform.DOScale(Vector3.one, AnimationDuration));
-                _sequence.SetEase(AnimationEase);
+                _sequence = DOTween.Sequence()
+                    .Append(_canvasGroup.DOFade(1, AnimationDuration))
+                    .Join(transform.DOScale(Vector3.one, AnimationDuration))
+                    .SetEase(AnimationEase);
                 await _sequence.ToUniTask();
             }
         }
@@ -62,10 +62,10 @@ namespace TendedTarsier.Core.Panels
             if (PlayAnimation)
             {
                 _sequence?.Kill();
-                _sequence = DOTween.Sequence();
-                _sequence.Append(_canvasGroup.DOFade(0, AnimationDuration));
-                _sequence.Join(transform.DOScale(Vector3.one * 2, AnimationDuration));
-                _sequence.SetEase(AnimationEase);
+                _sequence = DOTween.Sequence()
+                    .Append(_canvasGroup.DOFade(0, AnimationDuration))
+                    .Join(transform.DOScale(Vector3.one * 2, AnimationDuration))
+                    .SetEase(AnimationEase);
                 await _sequence.ToUniTask();
             }
 

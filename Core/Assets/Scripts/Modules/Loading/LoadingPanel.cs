@@ -3,9 +3,9 @@ using DG.Tweening;
 using TendedTarsier.Core.Panels;
 using UnityEngine;
 
-namespace TendedTarsier.Core.Modules.General
+namespace TendedTarsier.Core.Modules.Loading
 {
-    public class GeneralLoadingPanel : PanelBase
+    public class LoadingPanel : PanelBase
     {
         [SerializeField]
         public RectTransform _rectTransform;
