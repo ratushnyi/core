@@ -18,19 +18,5 @@
     "com.unity.inputsystem": "1.7.0",
     "com.unity.textmeshpro": "3.0.9",
     "com.system-community.systemruntimecompilerservicesunsafe": "6.0.0"
-  },
-  "scopedRegistries":
-    {
-      "name": "package.openupm.com",
-      "url": "https://package.openupm.com",
-      "scopes": [
-        "com.openupm",
-        "com.neuecc.unirx",
-        "com.cysharp.unitask",
-        "com.cysharp.memorypack",
-        "com.svermeulen.extenject",
-        "com.dbrizov.naughtyattributes",
-        "com.system-community.systemruntimecompilerservicesunsafe"
-      ]
-    }
+  }
 }

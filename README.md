@@ -1,11 +1,20 @@
-{
-  "name": "com.appcraft.adjust",
-  "displayName": "Appcraft Unity Core: Adjust",
-  "description": "Your end-to-end solution for every stage of the app marketing journey. Measure, optimize, and scale app growth across platforms.",
-  "version": "4.33.0",
-  "documentationUrl": "https://github.com/adjust/unity_sdk",
-  "changelogUrl": "https://github.com/adjust/unity_sdk/releases",
-  "author": {
-    "name": "Appcraft"
-  }
-}
+1. Import Core repository as submodule in root folder
+2. Add in manifest external scopes registrer:
+"scopedRegistries":
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.openupm",
+        "com.neuecc.unirx",
+        "com.cysharp.unitask",
+        "com.cysharp.memorypack",
+        "com.svermeulen.extenject",
+        "com.dbrizov.naughtyattributes",
+        "com.system-community.systemruntimecompilerservicesunsafe"
+      ]
+    }
+3. Install all of them using Package Manager
+Attention! MemoryPack should be 1.10.0 only, not abowe!
+4. Add define on "UNITASK_DOTWEEN_SUPPORT"
+5. Add dependency in manifest "com.tendedtarsier.core": "file:../../core/Core/Assets" 
