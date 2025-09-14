@@ -2,25 +2,16 @@ using System;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Utilities.Extensions;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace TendedTarsier.Core.Services.Input
 {
     [UsedImplicitly]
-    public class InputService : ServiceBase
+    public class InputService : ServiceBase, IInitializable
     {
         private readonly GameplayInput _gameplayInput;
 
-        /// Right stick/Mouse
-        public InputAction Look;
-        public IObservable<InputAction.CallbackContext> OnLookStarted { get; private set; }
-        public IObservable<InputAction.CallbackContext> OnLookPerformed { get; private set; }
-        public IObservable<InputAction.CallbackContext> OnLookCanceled { get; private set; }
-
-        /// Left stick/WASD
-        public InputAction Move;
-        public IObservable<InputAction.CallbackContext> OnMoveStarted { get; private set; }
-        public IObservable<InputAction.CallbackContext> OnMovePerformed { get; private set; }
-        public IObservable<InputAction.CallbackContext> OnMoveCanceled { get; private set; }
+        public GameplayInput.PlayerActions PlayerActions  => _gameplayInput.Player;
 
         /// Gamepad A/Space
         public IObservable<InputAction.CallbackContext> OnJumpButtonStarted { get; private set; }
@@ -81,21 +72,13 @@ namespace TendedTarsier.Core.Services.Input
             _gameplayInput = gameplayInput;
         }
 
-        protected override void Initialize()
+        public void Initialize()
         {
-            base.Initialize();
-
             InitInput();
         }
 
         private void InitInput()
         {
-            Look = _gameplayInput.Player.Look;
-            (OnLookStarted, OnLookPerformed, OnLookCanceled) = _gameplayInput.Player.Look.ToObservable();
-
-            Move = _gameplayInput.Player.Move;
-            (OnMoveStarted, OnMovePerformed, OnMoveCanceled) = _gameplayInput.Player.Move.ToObservable();
-
             (OnJumpButtonStarted, OnJumpButtonPerformed, OnJumpButtonCanceled) = _gameplayInput.Player.Jump.ToObservable();
             (OnCrouchButtonStarted, OnCrouchButtonPerformed, OnCrouchButtonCanceled) = _gameplayInput.Player.Crouch.ToObservable();
             (OnAttackButtonStarted, OnAttackButtonPerformed, OnAttackButtonCanceled) = _gameplayInput.Player.Attack.ToObservable();

@@ -8,11 +8,12 @@ using TendedTarsier.Core.Utilities.Extensions;
 using TendedTarsier.Core.Utilities.MemoryPack.FormatterProviders;
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace TendedTarsier.Core.Services.Profile
 {
     [UsedImplicitly]
-    public class ProfileService : ServiceBase
+    public class ProfileService : ServiceBase, IInitializable
     {
         public static readonly string ProfilesDirectory = Path.Combine(Application.persistentDataPath, ProjectConstants.ProfilesDirectory);
 
@@ -25,10 +26,8 @@ namespace TendedTarsier.Core.Services.Profile
             _profiles = profiles;
         }
 
-        protected override void Initialize()
+        public void Initialize()
         {
-            base.Initialize();
-
             RegisterFormatters();
             LoadSections();
         }

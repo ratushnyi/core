@@ -5,13 +5,12 @@ using Zenject;
 
 namespace TendedTarsier.Core.Services
 {
-    public abstract class ServiceBase : IDisposable
+    public abstract class ServiceBase : IDisposable, IInitializable
     {
         protected readonly CompositeDisposable CompositeDisposable = new();
         [Inject] private DiContainer Container;
 
-        [Inject]
-        protected virtual void Initialize()
+        void IInitializable.Initialize()
         {
             Observable.OnceApplicationQuit().Subscribe(_ => Terminate());
         }

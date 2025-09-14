@@ -12,13 +12,11 @@ namespace TendedTarsier.Core.Services.Modules
     public class ModuleService : ServiceBase
     {
         private readonly PanelLoader<LoadingPanel> _loaderPanel;
-        private readonly ProjectProfile _projectProfile;
         public ModuleControllerBase CurrentModule { get; private set; }
 
-        public ModuleService(PanelLoader<LoadingPanel> loaderPanel, ProjectProfile projectProfile)
+        public ModuleService(PanelLoader<LoadingPanel> loaderPanel)
         {
             _loaderPanel = loaderPanel;
-            _projectProfile = projectProfile;
         }
 
         public async UniTask LoadModule(string sceneName)
