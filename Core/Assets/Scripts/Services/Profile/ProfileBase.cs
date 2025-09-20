@@ -2,6 +2,7 @@ using System;
 using MemoryPack;
 using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
+using Zenject;
 
 namespace TendedTarsier.Core.Services.Profile
 {
@@ -14,9 +15,11 @@ namespace TendedTarsier.Core.Services.Profile
         [MemoryPackIgnore]
         public abstract string Name { get; }
 
-        public void Init(ProfileService profileService)
+        [Inject]
+        public void Construct(ProfileService profileService)
         {
             _profileService = profileService;
+            _profileService.RegisterProfile(this);
         }
 
         public virtual void RegisterFormatters()

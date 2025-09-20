@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using MemoryPack;
 using TendedTarsier.Core.Modules.Project;
@@ -19,17 +20,13 @@ namespace TendedTarsier.Core.Services.Profile
 
         public IObservable<Unit> ClearAllObservable => _clearAllSubject;
         private readonly ISubject<Unit> _clearAllSubject = new Subject<Unit>();
-        private readonly List<IProfile> _profiles;
-
-        public ProfileService(List<IProfile> profiles)
-        {
-            _profiles = profiles;
-        }
-
+        private readonly UniTaskCompletionSource _initializedTask = new();
+        private readonly List<IProfile> _profiles = new();
+        
         public void Initialize()
         {
             RegisterFormatters();
-            LoadSections();
+            _initializedTask.TrySetResult();
         }
 
         private void RegisterFormatters()
@@ -51,18 +48,17 @@ namespace TendedTarsier.Core.Services.Profile
             MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, ReactiveProperty<int>>());
             MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, ReactiveProperty<float>>());
         }
-
-        private void LoadSections()
+        
+        public void RegisterProfile(IProfile profile)
         {
-            foreach (var profile in _profiles)
-            {
-                profile.RegisterFormatters();
-                LoadSection(profile);
-            }
+            _profiles.Add(profile);
+            LoadProfile(profile).Forget();
         }
 
-        private void LoadSection(IProfile profile)
+        private async UniTaskVoid LoadProfile(IProfile profile)
         {
+            await _initializedTask.Task;
+            profile.RegisterFormatters();
             var path = GetSectionPath(profile.Name);
             if (File.Exists(path))
             {
@@ -85,7 +81,6 @@ namespace TendedTarsier.Core.Services.Profile
             }
 
             profile.OnSectionLoaded();
-            profile.Init(this);
         }
 
         public void SaveAll()
