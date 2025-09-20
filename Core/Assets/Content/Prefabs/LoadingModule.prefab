@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moduleController: {fileID: 3357906966441812412}
-  <Config>k__BackingField: {fileID: 11400000, guid: 198360ce4d06675f79afab7e6368352e, type: 2}
+  <ModuleConfig>k__BackingField: {fileID: 11400000, guid: 198360ce4d06675f79afab7e6368352e, type: 2}
 --- !u!1 &2643648269103497469
 GameObject:
   m_ObjectHideFlags: 0

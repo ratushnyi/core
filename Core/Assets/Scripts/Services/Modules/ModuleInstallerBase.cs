@@ -3,17 +3,14 @@ using Zenject;
 
 namespace TendedTarsier.Core.Services.Modules
 {
-    public abstract class ModuleInstallerBase<T> : MonoInstaller where T : ModuleConfigBase
+    public abstract class ModuleInstallerBase : MonoInstaller
     {
         [SerializeField] private ModuleControllerBase _moduleController;
-        [field: SerializeField] protected T Config { get; set; }
 
         protected abstract void InstallModuleBindings();
-        
         public override void InstallBindings()
         {
             BindModule();
-            BindConfigs();
             InstallModuleBindings();
         }
 
@@ -21,10 +18,22 @@ namespace TendedTarsier.Core.Services.Modules
         {
             Container.Bind<ModuleControllerBase>().FromInstance(_moduleController).AsSingle().NonLazy();
         }
-
-        private void BindConfigs()
+    }
+    
+    public abstract class ModuleInstallerBase<T> : ModuleInstallerBase where T : ModuleConfigBase
+    {
+        [field: SerializeField] protected T ModuleConfig { get; set; }
+        
+        public override void InstallBindings()
         {
-            Container.Bind<T>().FromInstance(Config).AsSingle().NonLazy();
+            base.InstallBindings();
+            BindConfigs();
+        }
+
+
+        protected virtual void BindConfigs()
+        {
+            Container.Bind<T>().FromInstance(ModuleConfig).AsSingle().NonLazy();
         }
     }
 }

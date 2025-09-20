@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moduleController: {fileID: 704800639241967492}
-  <Config>k__BackingField: {fileID: 11400000, guid: e35fb290f5f18ff79aba5227104b0020, type: 2}
+  <ModuleConfig>k__BackingField: {fileID: 11400000, guid: e35fb290f5f18ff79aba5227104b0020, type: 2}
   _canvas: {fileID: 6368572181665773501}
 --- !u!1 &8939614071063051490
 GameObject:

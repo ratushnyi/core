@@ -15,7 +15,7 @@ namespace TendedTarsier.Core.Modules.Menu
 
         private void BindPanels()
         {
-            Container.BindPanel<MenuPanel>(Config.MenuPanel, _canvas);
+            Container.BindPanel<MenuPanel>(ModuleConfig.MenuPanel, _canvas);
         }
     }
 }
