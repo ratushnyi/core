@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TendedTarsier.Core.Modules.Project;
@@ -25,6 +26,8 @@ namespace TendedTarsier.Core.Modules.Menu
         private ProjectProfile _projectProfile;
         private MenuModuleConfig _menuModuleConfig;
 
+        private readonly List<Button> _listButtons = new();
+
         [Inject]
         private void Construct(
             MenuModuleConfig menuModuleConfig,
@@ -47,16 +50,23 @@ namespace TendedTarsier.Core.Modules.Menu
             SubscribeButtons();
         }
 
-        private void InitButtons()
+        protected void RegisterButton(Button button)
         {
-            _continueButton.targetGraphic.color = Color.clear;
-            _newGameButton.targetGraphic.color = Color.clear;
-            _exitButton.targetGraphic.color = Color.clear;
+            button.targetGraphic.color = Color.clear;
+            _listButtons.Add(button);
+        }
+
+        protected virtual void InitButtons()
+        {
+            RegisterButton(_continueButton);
+            RegisterButton(_newGameButton);
+            RegisterButton(_exitButton);
+            
             _continueButton.interactable = !string.IsNullOrEmpty(_projectProfile.LastGameplayScene);
             _eventSystem.SetSelectedGameObject(_continueButton.interactable ? _continueButton.gameObject : _newGameButton.gameObject);
         }
 
-        private void SubscribeButtons()
+        protected virtual void SubscribeButtons()
         {
             _continueButton.OnClickAsObservable().Subscribe(_ => OnContinueButtonClick()).AddTo(CompositeDisposable);
             _newGameButton.OnClickAsObservable().Subscribe(_ => OnNewGameButtonClick()).AddTo(CompositeDisposable);
@@ -74,9 +84,11 @@ namespace TendedTarsier.Core.Modules.Menu
             Sequence createSequence()
             {
                 var sequence = DOTween.Sequence();
-                sequence.Join(_continueButton.targetGraphic.DOColor(Color.white, AnimationDuration));
-                sequence.Join(_newGameButton.targetGraphic.DOColor(Color.white, AnimationDuration));
-                sequence.Join(_exitButton.targetGraphic.DOColor(Color.white, AnimationDuration));
+
+                foreach (var button in _listButtons)
+                {
+                    sequence.Join(button.targetGraphic.DOColor(Color.white, AnimationDuration));
+                }
                 sequence.SetEase(AnimationEase);
                 
                 return sequence;

@@ -9,17 +9,10 @@ namespace TendedTarsier.Core.Panels
     [RequireComponent(typeof(CanvasGroup))]
     public class PanelBase : MonoBehaviour
     {
-        [field: SerializeField]
-        public bool ShowInstantly { get; set; }
-
-        [field: SerializeField]
-        protected bool PlayAnimation { get; private set; } = true;
-
-        [field: SerializeField]
-        protected float AnimationDuration { get; private set; } = 0.2f;
-
-        [field: SerializeField]
-        protected Ease AnimationEase { get; private set; } = Ease.InOutSine;
+        [field: SerializeField] public bool ShowInstantly { get; set; }
+        [field: SerializeField] protected bool PlayAnimation { get; private set; } = true;
+        [field: SerializeField] protected float AnimationDuration { get; private set; } = 0.2f;
+        [field: SerializeField] protected Ease AnimationEase { get; private set; } = Ease.InOutSine;
 
         private CanvasGroup _canvasGroup;
         private Sequence _sequence;
@@ -39,10 +32,11 @@ namespace TendedTarsier.Core.Panels
         protected virtual void Initialize()
         {
         }
+
         public virtual async UniTask ShowAnimation()
         {
             gameObject.SetActive(true);
-            
+
             if (PlayAnimation)
             {
                 transform.localScale = Vector3.one * 2;
@@ -70,12 +64,12 @@ namespace TendedTarsier.Core.Panels
             }
 
             gameObject.SetActive(false);
-            
+
             transform.localScale = Vector3.one;
             _canvasGroup.alpha = 1;
         }
 
-        public void PerformHide(bool force =  false)
+        public void PerformHide(bool force = false)
         {
             _hide.OnNext(force);
         }
