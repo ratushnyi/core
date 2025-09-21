@@ -8,11 +8,13 @@ namespace TendedTarsier.Core.Modules.Loading
     public class LoadingModuleController : ModuleControllerBase
     {
         private LoadingModuleConfig _moduleConfig;
+        private ModuleService _moduleService;
 
         [Inject]
-        private void Construct(LoadingModuleConfig moduleConfig)
+        private void Construct(LoadingModuleConfig moduleConfig, ModuleService moduleService)
         {
             _moduleConfig = moduleConfig;
+            _moduleService = moduleService;
         }
 
         private void Start()
@@ -23,7 +25,7 @@ namespace TendedTarsier.Core.Modules.Loading
         public override async UniTask Initialize()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(_moduleConfig.StartupLoadingDuration));
-            ModuleService.LoadModule(_moduleConfig.MenuScene).Forget();
+            _moduleService.LoadModule(_moduleConfig.MenuScene).Forget();
         }
     }
 }
