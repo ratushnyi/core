@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Modules.Loading;
-using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Panels;
 using UnityEngine;
 using UnityEngine.SceneManagement;

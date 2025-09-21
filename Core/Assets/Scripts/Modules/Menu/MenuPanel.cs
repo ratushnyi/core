@@ -95,17 +95,17 @@ namespace TendedTarsier.Core.Modules.Menu
             }
         }
 
-        private void OnContinueButtonClick()
+        protected virtual UniTask OnContinueButtonClick()
         {
-            _moduleService.LoadModule(_projectProfile.LastGameplayScene).Forget();
+            return _moduleService.LoadModule(_projectProfile.LastGameplayScene);
         }
 
-        private void OnNewGameButtonClick()
+        protected virtual UniTask OnNewGameButtonClick()
         {
             _profileService.ClearAll();
             _projectProfile.LastGameplayScene = _menuModuleConfig.NewGameScene;
             _projectProfile.Save();
-            _moduleService.LoadModule(_menuModuleConfig.NewGameScene).Forget();
+            return _moduleService.LoadModule(_menuModuleConfig.NewGameScene);
         }
 
         private void OnExitButtonClick()
