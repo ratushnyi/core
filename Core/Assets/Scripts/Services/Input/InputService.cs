@@ -80,19 +80,19 @@ namespace TendedTarsier.Core.Services.Input
 
         private void InitInput()
         {
-            (OnJumpButtonStarted, OnJumpButtonPerformed, OnJumpButtonCanceled) = _gameplayInput.Player.Jump.ToObservable();
-            (OnCrouchButtonStarted, OnCrouchButtonPerformed, OnCrouchButtonCanceled) = _gameplayInput.Player.Crouch.ToObservable();
-            (OnAttackButtonStarted, OnAttackButtonPerformed, OnAttackButtonCanceled) = _gameplayInput.Player.Attack.ToObservable();
-            (OnInteractButtonStarted, OnInteractButtonPerformed, OnInteractButtonCanceled) = _gameplayInput.Player.Interact.ToObservable();
+            (OnJumpButtonStarted, OnJumpButtonPerformed, OnJumpButtonCanceled) = _gameplayInput.Player.Jump.AsObservable();
+            (OnCrouchButtonStarted, OnCrouchButtonPerformed, OnCrouchButtonCanceled) = _gameplayInput.Player.Crouch.AsObservable();
+            (OnAttackButtonStarted, OnAttackButtonPerformed, OnAttackButtonCanceled) = _gameplayInput.Player.Attack.AsObservable();
+            (OnInteractButtonStarted, OnInteractButtonPerformed, OnInteractButtonCanceled) = _gameplayInput.Player.Interact.AsObservable();
 
-            (OnLeftButtonStarted, OnLeftButtonPerformed, OnLeftButtonCanceled) = _gameplayInput.Player.Left.ToObservable();
-            (OnRightButtonStarted, OnRightButtonPerformed, OnRightButtonCanceled) = _gameplayInput.Player.Right.ToObservable();
-            (OnUpButtonStarted, OnUpButtonPerformed, OnUpButtonCanceled) = _gameplayInput.Player.Up.ToObservable();
-            (OnDownButtonStarted, OnDownButtonPerformed, OnDownButtonCanceled) = _gameplayInput.Player.Down.ToObservable();
+            (OnLeftButtonStarted, OnLeftButtonPerformed, OnLeftButtonCanceled) = _gameplayInput.Player.Left.AsObservable();
+            (OnRightButtonStarted, OnRightButtonPerformed, OnRightButtonCanceled) = _gameplayInput.Player.Right.AsObservable();
+            (OnUpButtonStarted, OnUpButtonPerformed, OnUpButtonCanceled) = _gameplayInput.Player.Up.AsObservable();
+            (OnDownButtonStarted, OnDownButtonPerformed, OnDownButtonCanceled) = _gameplayInput.Player.Down.AsObservable();
 
-            (OnSprintButtonStarted, OnSprintButtonPerformed, OnSprintButtonCanceled) = _gameplayInput.Player.Sprint.ToObservable();
-            (OnMenuButtonStarted, OnMenuButtonPerformed, OnMenuButtonCanceled) = _gameplayInput.Player.Menu.ToObservable();
-            (OnOptionsButtonStarted, OnOptionsButtonPerformed, OnOptionsButtonCanceled) = _gameplayInput.Player.Options.ToObservable();
+            (OnSprintButtonStarted, OnSprintButtonPerformed, OnSprintButtonCanceled) = _gameplayInput.Player.Sprint.AsObservable();
+            (OnMenuButtonStarted, OnMenuButtonPerformed, OnMenuButtonCanceled) = _gameplayInput.Player.Menu.AsObservable();
+            (OnOptionsButtonStarted, OnOptionsButtonPerformed, OnOptionsButtonCanceled) = _gameplayInput.Player.Options.AsObservable();
 
             _gameplayInput.Player.Enable();
         }

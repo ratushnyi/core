@@ -21,7 +21,7 @@ namespace TendedTarsier.Core.Services.Profile
         public IObservable<Unit> ClearAllObservable => _clearAllSubject;
         private readonly ISubject<Unit> _clearAllSubject = new Subject<Unit>();
         private readonly UniTaskCompletionSource _initializedTask = new();
-        private readonly List<IProfile> _profiles = new();
+        private readonly Dictionary<string, IProfile> _profiles = new();
         
         public void Initialize()
         {
@@ -51,7 +51,12 @@ namespace TendedTarsier.Core.Services.Profile
         
         public void RegisterProfile(IProfile profile)
         {
-            _profiles.Add(profile);
+            if (!_profiles.TryAdd(profile.Name, profile))
+            {
+                Save(_profiles[profile.Name]);
+                _profiles[profile.Name] = profile;
+            }
+            
             LoadProfile(profile).Forget();
         }
 
@@ -87,7 +92,7 @@ namespace TendedTarsier.Core.Services.Profile
         {
             foreach (var profile in _profiles)
             {
-                Save(profile);
+                Save(profile.Value);
             }
         }
 
@@ -131,7 +136,7 @@ namespace TendedTarsier.Core.Services.Profile
         {
             foreach (var profile in _profiles)
             {
-                profile.Clear();
+                profile.Value.Clear();
             }
             _clearAllSubject.OnNext(Unit.Default);
         }
