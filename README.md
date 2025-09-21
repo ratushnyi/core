@@ -11,7 +11,8 @@
         "com.cysharp.memorypack",
         "com.svermeulen.extenject",
         "com.dbrizov.naughtyattributes",
-        "com.system-community.systemruntimecompilerservicesunsafe"
+        "com.system-community.systemruntimecompilerservicesunsafe",
+        "com.marijnzwemmer.unity-toolbar-extender"
       ]
     }
 3. Install all of them using Package Manager

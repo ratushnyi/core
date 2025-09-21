@@ -6,13 +6,35 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityToolbarExtender;
 
 namespace TendedTarsier.Core.Utilities
 {
+    [InitializeOnLoad]
     public static class MenuUtilities
     {
         private const string RootMenu = "TendedTarsier/";
         private const string ProfileMenu = RootMenu + "User Profile/";
+        
+        static MenuUtilities()
+        {
+            ToolbarExtender.LeftToolbarGUI.Add(OnToolbarGUI);
+        }
+        
+        static void OnToolbarGUI()
+        {
+            if (GUILayout.Button(new GUIContent("Load first scene", "Play first enabled scene")))
+            {
+                StartLoading();
+            }
+        }
+
+        private static void StartLoading()
+        {
+            EditorApplication.isPlaying = false;
+            EditorSceneManager.OpenScene(EditorBuildSettings.scenes.First(s => s.enabled).path);
+            EditorApplication.isPlaying = true;
+        }
 
         [MenuItem(ProfileMenu + "Clean Profiles", false, 1)]
         private static void CleanProfiles()

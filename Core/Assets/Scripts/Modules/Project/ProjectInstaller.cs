@@ -18,8 +18,8 @@ namespace TendedTarsier.Core.Modules.Project
         public override void InstallBindings()
         {
             BindEngine();
-            BindProfiles();
             BindServices();
+            BindProfiles();
         }
 
         private void BindEngine()

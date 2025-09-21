@@ -3,6 +3,7 @@
     "com.cysharp.memorypack": "1.10.0",
     "com.cysharp.unitask": "2.5.10",
     "com.dbrizov.naughtyattributes": "2.1.4",
+    "com.marijnzwemmer.unity-toolbar-extender": "1.4.2",
     "com.neuecc.unirx": "7.1.0",
     "com.svermeulen.extenject": "9.2.0-stcf3",
     "com.system-community.systemruntimecompilerservicesunsafe": "6.0.0",
@@ -11,7 +12,7 @@
     "com.unity.ai.navigation": "2.0.9",
     "com.unity.cinemachine": "3.1.4",
     "com.unity.collab-proxy": "2.9.2",
-    "com.unity.ide.rider": "3.0.37",
+    "com.unity.ide.rider": "3.0.38",
     "com.unity.inputsystem": "1.14.2",
     "com.unity.multiplayer.center": "1.0.0",
     "com.unity.timeline": "1.8.9",
@@ -61,7 +62,8 @@
         "com.cysharp.memorypack",
         "com.svermeulen.extenject",
         "com.dbrizov.naughtyattributes",
-        "com.system-community.systemruntimecompilerservicesunsafe"
+        "com.system-community.systemruntimecompilerservicesunsafe",
+        "com.marijnzwemmer.unity-toolbar-extender"
       ]
     }
   ]

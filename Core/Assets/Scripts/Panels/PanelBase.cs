@@ -9,7 +9,9 @@ namespace TendedTarsier.Core.Panels
     [RequireComponent(typeof(CanvasGroup))]
     public class PanelBase : MonoBehaviour
     {
-        [field: SerializeField] public bool ShowInstantly { get; set; }
+        public virtual bool ShowInstantly => _showInstantly;
+        
+        [SerializeField] private bool _showInstantly;
         [field: SerializeField] protected bool PlayAnimation { get; private set; } = true;
         [field: SerializeField] protected float AnimationDuration { get; private set; } = 0.2f;
         [field: SerializeField] protected Ease AnimationEase { get; private set; } = Ease.InOutSine;
