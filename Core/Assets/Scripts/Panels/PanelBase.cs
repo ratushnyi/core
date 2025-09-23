@@ -6,11 +6,29 @@ using UnityEngine;
 
 namespace TendedTarsier.Core.Panels
 {
+    public abstract class ResultPanelBase<T> : PanelBase
+    {
+        private readonly UniTaskCompletionSource<T> _resultCompletionSource = new();
+
+        protected void SetResult(T result)
+        {
+            _resultCompletionSource.TrySetResult(result);
+        }
+
+        public async UniTask<T> WaitForResult()
+        {
+            var result = await _resultCompletionSource.Task;
+            await WaitForHide();
+
+            return result;
+        }
+    }
+
     [RequireComponent(typeof(CanvasGroup))]
     public class PanelBase : MonoBehaviour
     {
         public virtual bool ShowInstantly => _showInstantly;
-        
+
         [SerializeField] private bool _showInstantly;
         [field: SerializeField] protected bool PlayAnimation { get; private set; } = true;
         [field: SerializeField] protected float AnimationDuration { get; private set; } = 0.2f;
@@ -19,10 +37,11 @@ namespace TendedTarsier.Core.Panels
         private CanvasGroup _canvasGroup;
         private Sequence _sequence;
 
-        public IObservable<bool> Hide => _hide;
-        private readonly ISubject<bool> _hide = new Subject<bool>();
+        public IObservable<bool> HideObservable => _hideSubject;
+        private readonly ISubject<bool> _hideSubject = new Subject<bool>();
+        private readonly UniTaskCompletionSource _hideCompletionSource = new();
 
-        public readonly CompositeDisposable CompositeDisposable = new();
+        protected readonly CompositeDisposable CompositeDisposable = new();
 
         public virtual UniTask InitializeAsync()
         {
@@ -69,11 +88,17 @@ namespace TendedTarsier.Core.Panels
 
             transform.localScale = Vector3.one;
             _canvasGroup.alpha = 1;
+            _hideCompletionSource.TrySetResult();
         }
 
-        public void PerformHide(bool force = false)
+        public void Hide(bool force = false)
         {
-            _hide.OnNext(force);
+            _hideSubject.OnNext(force);
+        }
+
+        public async UniTask WaitForHide()
+        {
+            await _hideCompletionSource.Task;
         }
 
         protected virtual void Dispose()

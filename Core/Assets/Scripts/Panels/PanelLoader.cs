@@ -22,7 +22,7 @@ namespace TendedTarsier.Core.Panels
         private readonly T _prefab;
         private readonly Canvas _canvas;
         private readonly DiContainer _container;
-        private UniTaskCompletionSource _completionSource;
+        private IDisposable _hideDisposable;
 
         public T Instance { get; private set; }
         public State PanelState { get; private set; }
@@ -75,6 +75,7 @@ namespace TendedTarsier.Core.Panels
 
         public async UniTask Hide(bool immediate = false, bool waitForCompletion = false)
         {
+            _hideDisposable.Dispose();
             if (Instance == null)
             {
                 Debug.LogError($"You try to Hide {nameof(T)} panel, but it not been Showed.");
@@ -87,7 +88,6 @@ namespace TendedTarsier.Core.Panels
                 await Instance.HideAnimation();
             }
             PanelState = State.Hide;
-            _completionSource.TrySetResult();
 
             if (waitForCompletion)
             {
@@ -99,16 +99,10 @@ namespace TendedTarsier.Core.Panels
             }
         }
 
-        public async UniTask WaitForHide()
-        {
-            await _completionSource.Task;
-        }
-
         private UniTask Load(IEnumerable<object> extraArgs)
         {
             Instance = _container.InstantiatePrefabForComponent<T>(_prefab, _canvas.transform, extraArgs);
-            Instance.Hide.Subscribe(t => Hide(t).Forget()).AddTo(Instance.CompositeDisposable);
-            _completionSource = new UniTaskCompletionSource();
+            _hideDisposable = Instance.HideObservable.Subscribe(t => Hide(t).Forget());
             return UniTask.CompletedTask;
         }
 
