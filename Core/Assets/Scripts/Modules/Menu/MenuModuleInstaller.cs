@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TendedTarsier.Core.Modules.Menu
 {
-    public class MenuModuleInstaller : ModuleInstallerBase<MenuModuleConfig>
+    public class MenuModuleInstaller : ModuleInstallerBase<MenuModuleController, MenuModuleConfig>
     {
         [SerializeField] private Canvas _canvas;
 

@@ -5,7 +5,7 @@ using Zenject;
 
 namespace TendedTarsier.Core.Modules.Loading
 {
-    public class LoadingModuleInstaller : ModuleInstallerBase<LoadingModuleConfig>
+    public class LoadingModuleInstaller : ModuleInstallerBase<LoadingModuleController, LoadingModuleConfig>
     {
         private Canvas _canvas;
 

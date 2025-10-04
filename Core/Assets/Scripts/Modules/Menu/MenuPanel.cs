@@ -90,6 +90,7 @@ namespace TendedTarsier.Core.Modules.Menu
                     sequence.Join(button.targetGraphic.DOColor(Color.white, AnimationDuration));
                 }
                 sequence.SetEase(AnimationEase);
+                sequence.SetUpdate(true);
                 
                 return sequence;
             }

@@ -10,9 +10,16 @@ namespace TendedTarsier.Core.Panels
     {
         private readonly UniTaskCompletionSource<T> _resultCompletionSource = new();
 
-        protected void SetResult(T result)
+        public new void Hide(bool force = false)
+        {
+            _resultCompletionSource.TrySetResult(default);
+            base.Hide(force);
+        }
+
+        protected void HideWithResult(T result)
         {
             _resultCompletionSource.TrySetResult(result);
+            Hide();
         }
 
         public async UniTask<T> WaitForResult()
@@ -67,7 +74,9 @@ namespace TendedTarsier.Core.Panels
                 _sequence = DOTween.Sequence()
                     .Append(_canvasGroup.DOFade(1, AnimationDuration))
                     .Join(transform.DOScale(Vector3.one, AnimationDuration))
-                    .SetEase(AnimationEase);
+                    .SetEase(AnimationEase)
+                    .SetUpdate(true);
+                
                 await _sequence.ToUniTask();
             }
         }
@@ -80,7 +89,9 @@ namespace TendedTarsier.Core.Panels
                 _sequence = DOTween.Sequence()
                     .Append(_canvasGroup.DOFade(0, AnimationDuration))
                     .Join(transform.DOScale(Vector3.one * 2, AnimationDuration))
-                    .SetEase(AnimationEase);
+                    .SetEase(AnimationEase)
+                    .SetUpdate(true);
+                
                 await _sequence.ToUniTask();
             }
 

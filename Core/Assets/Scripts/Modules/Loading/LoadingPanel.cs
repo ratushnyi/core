@@ -13,12 +13,18 @@ namespace TendedTarsier.Core.Modules.Loading
         public override async UniTask ShowAnimation()
         {
             _rectTransform.anchoredPosition = new Vector2(0, Screen.height);
-            await _rectTransform.DOAnchorPos(Vector2.zero, AnimationDuration / 2).SetEase(AnimationEase).ToUniTask();
+            await _rectTransform.DOAnchorPos(Vector2.zero, AnimationDuration / 2)
+                .SetEase(AnimationEase)
+                .SetUpdate(true)
+                .ToUniTask();
         }
 
         public override async UniTask HideAnimation()
         {
-            await _rectTransform.DOAnchorPos(new Vector2(0, -Screen.height), AnimationDuration / 2).SetEase(AnimationEase).ToUniTask();
+            await _rectTransform.DOAnchorPos(new Vector2(0, -Screen.height), AnimationDuration / 2)
+                .SetEase(AnimationEase)
+                .SetUpdate(true)
+                .ToUniTask();
         }
     }
 }

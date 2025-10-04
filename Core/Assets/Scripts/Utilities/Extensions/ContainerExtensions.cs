@@ -14,6 +14,11 @@ namespace TendedTarsier.Core.Utilities.Extensions
             container.BindWithParents<PanelLoader<TPanel>>().FromNew().AsSingle().WithArguments(panel, canvas).NonLazy();
         }
 
+        public static void BindService<TService, TArgs>(this DiContainer container, TArgs arguments) where TService : ServiceBase
+        {
+            BindWithParents<TService>(container).AsSingle().WithArguments(arguments).NonLazy();
+        }
+
         public static void BindService<TService>(this DiContainer container) where TService : ServiceBase
         {
             BindWithParents<TService>(container).AsSingle().NonLazy();
