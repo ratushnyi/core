@@ -36,6 +36,9 @@ namespace TendedTarsier.Core.Services.Modules
             CompositeDisposable.Dispose();
         }
 
-        public abstract UniTask Initialize();
+        public virtual UniTask Initialize()
+        {
+            return UniTask.CompletedTask;
+        }
     }
 }
