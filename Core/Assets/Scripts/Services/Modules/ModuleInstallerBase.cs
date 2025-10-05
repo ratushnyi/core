@@ -1,3 +1,4 @@
+using TendedTarsier.Core.Utilities.Extensions;
 using UnityEngine;
 using Zenject;
 
@@ -16,7 +17,7 @@ namespace TendedTarsier.Core.Services.Modules
 
         private void BindModule()
         {
-            Container.Bind<TController>().FromInstance(_moduleController).AsSingle().NonLazy();
+            Container.BindWithParents<TController>().FromInstance(_moduleController).AsSingle().NonLazy();
         }
     }
     

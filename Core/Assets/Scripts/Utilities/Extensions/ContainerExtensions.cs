@@ -29,7 +29,7 @@ namespace TendedTarsier.Core.Utilities.Extensions
             BindWithParents<TProfile>(container).AsSingle().NonLazy();
         }
 
-        private static FromBinderNonGeneric BindWithParents<T>(this DiContainer container)
+        public static FromBinderNonGeneric BindWithParents<T>(this DiContainer container)
         {
             var current = typeof(T);
             var types = current.GetInterfaces().ToHashSet();
