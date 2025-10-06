@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using TendedTarsier.Core.Modules.Loading;
 using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Modules;
@@ -24,19 +25,19 @@ namespace TendedTarsier.Core.Modules.Menu
         private ProfileService _profileService;
         private ModuleService _moduleService;
         private ProjectProfile _projectProfile;
-        private MenuModuleConfig _menuModuleConfig;
+        private ProjectConfig _projectConfig;
 
         private readonly List<Button> _listButtons = new();
 
         [Inject]
         private void Construct(
-            MenuModuleConfig menuModuleConfig,
+            ProjectConfig projectConfig,
             ProjectProfile projectProfile,
             ProfileService profileService,
             ModuleService moduleService,
             EventSystem eventSystem)
         {
-            _menuModuleConfig = menuModuleConfig;
+            _projectConfig = projectConfig;
             _projectProfile = projectProfile;
             _profileService = profileService;
             _moduleService = moduleService;
@@ -61,8 +62,12 @@ namespace TendedTarsier.Core.Modules.Menu
             RegisterButton(_continueButton);
             RegisterButton(_newGameButton);
             RegisterButton(_exitButton);
-            
-            _continueButton.interactable = !string.IsNullOrEmpty(_projectProfile.LastGameplayScene);
+            InitContinueButton(_projectProfile.FirstStartDate != default);
+        }
+
+        protected void InitContinueButton(bool isInteractable)
+        {
+            _continueButton.interactable = isInteractable;
             _eventSystem.SetSelectedGameObject(_continueButton.interactable ? _continueButton.gameObject : _newGameButton.gameObject);
         }
 
@@ -98,15 +103,15 @@ namespace TendedTarsier.Core.Modules.Menu
 
         protected virtual UniTask OnContinueButtonClick()
         {
-            return _moduleService.LoadModule(_projectProfile.LastGameplayScene);
+            _profileService.SetNewGame(false);
+            return _moduleService.LoadModule(_projectConfig.GameplayScene);
         }
 
         protected virtual UniTask OnNewGameButtonClick()
         {
             _profileService.ClearAll();
-            _projectProfile.LastGameplayScene = _menuModuleConfig.NewGameScene;
-            _projectProfile.Save();
-            return _moduleService.LoadModule(_menuModuleConfig.NewGameScene);
+            _profileService.SetNewGame(true);
+            return _moduleService.LoadModule(_projectConfig.GameplayScene);
         }
 
         private void OnExitButtonClick()

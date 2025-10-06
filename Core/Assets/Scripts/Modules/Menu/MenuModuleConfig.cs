@@ -8,6 +8,5 @@ namespace TendedTarsier.Core.Modules.Menu
     public class MenuModuleConfig : ModuleConfigBase
     {
         [field: SerializeField] public MenuPanel MenuPanel { get; set; }
-        [field: SerializeField, Scene] public string NewGameScene { get; set; }
     }
 }

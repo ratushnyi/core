@@ -16,9 +16,14 @@ namespace TendedTarsier.Core.Services.Profile
         public abstract string Name { get; }
 
         [Inject]
-        public void Construct(ProfileService profileService)
+        private void Construct(ProfileService profileService)
         {
             _profileService = profileService;
+            RegisterProfile();
+        }
+
+        protected virtual void RegisterProfile()
+        {
             _profileService.RegisterProfile(this);
         }
 
@@ -50,6 +55,7 @@ namespace TendedTarsier.Core.Services.Profile
         public virtual void Dispose()
         {
             Save();
+            _profileService.UnregisterProfile(this);
             CompositeDisposable.Dispose();
         }
     }

@@ -4,6 +4,7 @@ using System.IO;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using MemoryPack;
+using TendedTarsier.Core.Modules.Loading;
 using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Utilities.Extensions;
 using TendedTarsier.Core.Utilities.MemoryPack.FormatterProviders;
@@ -22,7 +23,8 @@ namespace TendedTarsier.Core.Services.Profile
         private readonly ISubject<Unit> _clearAllSubject = new Subject<Unit>();
         private readonly UniTaskCompletionSource _initializedTask = new();
         private readonly Dictionary<string, IProfile> _profiles = new();
-        
+        private bool _newGame;
+
         public void Initialize()
         {
             RegisterFormatters();
@@ -48,7 +50,7 @@ namespace TendedTarsier.Core.Services.Profile
             MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, ReactiveProperty<int>>());
             MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<string, ReactiveProperty<float>>());
         }
-        
+
         public void RegisterProfile(IProfile profile)
         {
             if (!_profiles.TryAdd(profile.Name, profile))
@@ -56,8 +58,13 @@ namespace TendedTarsier.Core.Services.Profile
                 Save(_profiles[profile.Name]);
                 _profiles[profile.Name] = profile;
             }
-            
+
             LoadProfile(profile).Forget();
+        }
+
+        public void UnregisterProfile(IProfile profile)
+        {
+            _profiles.Remove(profile.Name);
         }
 
         private async UniTaskVoid LoadProfile(IProfile profile)
@@ -65,7 +72,7 @@ namespace TendedTarsier.Core.Services.Profile
             await _initializedTask.Task;
             profile.RegisterFormatters();
             var path = GetSectionPath(profile.Name);
-            if (File.Exists(path))
+            if (!_newGame && File.Exists(path))
             {
                 try
                 {
@@ -145,6 +152,11 @@ namespace TendedTarsier.Core.Services.Profile
         {
             base.Dispose();
             SaveAll();
+        }
+
+        public void SetNewGame(bool value)
+        {
+            _newGame = value;
         }
     }
 }

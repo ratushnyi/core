@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using TendedTarsier.Core.Services.Modules;
 using UnityEngine;
 
@@ -9,6 +8,5 @@ namespace TendedTarsier.Core.Modules.Loading
     {
         [field: SerializeField] public float StartupLoadingDuration { get; set; }
         [field: SerializeField] public LoadingPanel LoadingPanel { get; set; }
-        [field: SerializeField, Scene] public string MenuScene { get; set; }
     }
 }

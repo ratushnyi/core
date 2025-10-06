@@ -13,7 +13,7 @@ namespace TendedTarsier.Core.Modules.Project
         public DateTime FirstStartDate { get; set; }
 
         [MemoryPackOrder(1)]
-        public string LastGameplayScene { get; set; }
+        public string ServerId { get; set; }
 
         public override void OnSectionCreated()
         {

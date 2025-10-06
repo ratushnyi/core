@@ -11,6 +11,7 @@ namespace TendedTarsier.Core.Modules.Project
 {
     public class ProjectInstaller : MonoInstaller
     {
+        [SerializeField] private ProjectConfig _projectConfig;
         [Header("Engine")]
         [SerializeField] private EventSystem _eventSystem;
         [SerializeField] private Canvas _canvas;
@@ -20,6 +21,12 @@ namespace TendedTarsier.Core.Modules.Project
             BindEngine();
             BindServices();
             BindProfiles();
+            BindConfigs();
+        }
+
+        private void BindConfigs()
+        {
+            Container.Bind<ProjectConfig>().FromInstance(_projectConfig);
         }
 
         private void BindEngine()

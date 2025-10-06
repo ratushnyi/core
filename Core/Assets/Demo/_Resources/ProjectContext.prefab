@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 8394420813453237005}
   - component: {fileID: 6740003991428844547}
   m_Layer: 0
-  m_Name: GeneralInstaller
+  m_Name: ProjectInstaller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -289,6 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b890e171daf4df78c0203241f5ee55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _projectConfig: {fileID: 11400000, guid: d99437e4bc9b047578d0260b1e892f01, type: 2}
   _eventSystem: {fileID: 1651026451088510884}
   _canvas: {fileID: 1303754497087975824}
 --- !u!1001 &4215933544263831939
