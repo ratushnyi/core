@@ -76,8 +76,11 @@ namespace TendedTarsier.Core.Services.Profile
             {
                 try
                 {
-                    var bytesData = File.ReadAllBytes(path);
-                    var referenceObject = MemoryPackSerializer.Deserialize(profile.GetType(), bytesData);
+#if JSON_PROFILES
+                    var referenceObject = JsonUtility.FromJson(File.ReadAllText(path), profile.GetType());
+#else
+                    var referenceObject = MemoryPackSerializer.Deserialize(profile.GetType(), File.ReadAllBytes(path));
+#endif
 
                     TypeExtensions.PopulateObject(profile, referenceObject);
                 }
@@ -113,13 +116,21 @@ namespace TendedTarsier.Core.Services.Profile
                 }
 
                 var file = GetSectionPath(profile.Name);
+
+#if JSON_PROFILES
+                var json = JsonUtility.ToJson(profile);
+#else
                 var byteData = MemoryPackSerializer.Serialize(profile.GetType(), profile);
+#endif
                 if (File.Exists(file))
                 {
                     File.Delete(file);
                 }
-
+#if JSON_PROFILES
+                File.WriteAllText(file, json);
+#else
                 File.WriteAllBytes(file, byteData);
+#endif
             }
             catch (Exception e)
             {
