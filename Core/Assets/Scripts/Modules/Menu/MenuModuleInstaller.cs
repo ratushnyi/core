@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TendedTarsier.Core.Modules.Menu
 {
-    public class MenuModuleInstaller : ModuleInstallerBase<MenuModuleController, MenuModuleConfig>
+    public class MenuModuleInstaller : ModuleInstallerBase<MenuModuleController, MenuConfig>
     {
         [SerializeField] private Canvas _canvas;
 
@@ -15,7 +15,7 @@ namespace TendedTarsier.Core.Modules.Menu
 
         private void BindPanels()
         {
-            Container.BindPanel<MenuPanel>(ModuleConfig.MenuPanel, _canvas);
+            Container.BindPanel(ModuleConfig.MenuPanel, _canvas);
         }
     }
 }

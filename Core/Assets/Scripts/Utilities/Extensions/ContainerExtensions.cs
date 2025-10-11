@@ -1,6 +1,7 @@
 using System.Linq;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
+using TendedTarsier.Core.Services.Modules;
 using TendedTarsier.Core.Services.Profile;
 using UnityEngine;
 using Zenject;
@@ -9,7 +10,16 @@ namespace TendedTarsier.Core.Utilities.Extensions
 {
     public static class ContainerExtensions
     {
-        public static void BindPanel<TPanel>(this DiContainer container, PanelBase panel, Canvas canvas) where TPanel : PanelBase
+        public static void BindConfigs<TConfig>(this DiContainer container, TConfig config) where TConfig : ConfigBase
+        {
+            container.BindWithParents<TConfig>().FromInstance(config).AsSingle().NonLazy();
+            foreach (var item in config.InjectItems())
+            {
+                container.QueueForInject(item);
+            }
+        }
+        
+        public static void BindPanel<TPanel>(this DiContainer container, TPanel panel, Canvas canvas) where TPanel : PanelBase
         {
             container.BindWithParents<PanelLoader<TPanel>>().FromNew().AsSingle().WithArguments(panel, canvas).NonLazy();
         }

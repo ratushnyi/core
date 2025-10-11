@@ -21,7 +21,7 @@ namespace TendedTarsier.Core.Services.Modules
         }
     }
     
-    public abstract class ModuleInstallerBase<TController, TConfig> : ModuleInstallerBase<TController> where TConfig : ModuleConfigBase where TController : ModuleControllerBase
+    public abstract class ModuleInstallerBase<TController, TConfig> : ModuleInstallerBase<TController> where TConfig : ConfigBase where TController : ModuleControllerBase
     {
         [field: SerializeField] protected TConfig ModuleConfig { get; set; }
         

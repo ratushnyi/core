@@ -1,6 +1,6 @@
+using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Audio;
 using TendedTarsier.Core.Services.Input;
-using TendedTarsier.Core.Services.Modules;
 using TendedTarsier.Core.Services.Profile;
 using TendedTarsier.Core.Utilities.Extensions;
 using UnityEngine;
@@ -26,7 +26,7 @@ namespace TendedTarsier.Core.Modules.Project
 
         private void BindConfigs()
         {
-            Container.Bind<ProjectConfig>().FromInstance(_projectConfig);
+            Container.BindConfigs(_projectConfig);
         }
 
         private void BindEngine()
@@ -41,6 +41,7 @@ namespace TendedTarsier.Core.Modules.Project
             Container.BindService<ProfileService>();
             Container.BindService<InputService>();
             Container.BindService<AudioService>();
+            Container.BindService<BackButtonService>();
         }
 
         private void BindProfiles()

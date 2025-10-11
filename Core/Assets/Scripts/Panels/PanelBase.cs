@@ -3,14 +3,15 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace TendedTarsier.Core.Panels
 {
-    public abstract class ResultPanelBase<T> : PanelBase
+    public abstract class ResultPanelBase<T> : PopupBase
     {
         private readonly UniTaskCompletionSource<T> _resultCompletionSource = new();
 
-        public new void Hide(bool force = false)
+        public override void Hide(bool force = false)
         {
             _resultCompletionSource.TrySetResult(default);
             base.Hide(force);
@@ -31,6 +32,17 @@ namespace TendedTarsier.Core.Panels
         }
     }
 
+    public class PopupBase : PanelBase
+    {
+        [Inject] private BackButtonService _backButtonService;
+
+        public override UniTask InitializeAsync()
+        {
+            _backButtonService.AddAction(() => Hide()).AddTo(this);
+            return base.InitializeAsync();
+        }
+    }
+
     [RequireComponent(typeof(CanvasGroup))]
     public class PanelBase : MonoBehaviour
     {
@@ -47,8 +59,6 @@ namespace TendedTarsier.Core.Panels
         public IObservable<bool> HideObservable => _hideSubject;
         private readonly ISubject<bool> _hideSubject = new Subject<bool>();
         private readonly UniTaskCompletionSource _hideCompletionSource = new();
-
-        protected readonly CompositeDisposable CompositeDisposable = new();
 
         public virtual UniTask InitializeAsync()
         {
@@ -76,7 +86,7 @@ namespace TendedTarsier.Core.Panels
                     .Join(transform.DOScale(Vector3.one, AnimationDuration))
                     .SetEase(AnimationEase)
                     .SetUpdate(true);
-                
+
                 await _sequence.ToUniTask();
             }
         }
@@ -91,7 +101,7 @@ namespace TendedTarsier.Core.Panels
                     .Join(transform.DOScale(Vector3.one * 2, AnimationDuration))
                     .SetEase(AnimationEase)
                     .SetUpdate(true);
-                
+
                 await _sequence.ToUniTask();
             }
 
@@ -102,7 +112,7 @@ namespace TendedTarsier.Core.Panels
             _hideCompletionSource.TrySetResult();
         }
 
-        public void Hide(bool force = false)
+        public virtual void Hide(bool force = false)
         {
             _hideSubject.OnNext(force);
         }
@@ -110,16 +120,6 @@ namespace TendedTarsier.Core.Panels
         public async UniTask WaitForHide()
         {
             await _hideCompletionSource.Task;
-        }
-
-        protected virtual void Dispose()
-        {
-            CompositeDisposable.Dispose();
-        }
-
-        private void OnDestroy()
-        {
-            Dispose();
         }
     }
 }

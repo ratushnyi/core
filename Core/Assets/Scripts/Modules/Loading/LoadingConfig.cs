@@ -4,7 +4,7 @@ using UnityEngine;
 namespace TendedTarsier.Core.Modules.Loading
 {
     [CreateAssetMenu(menuName = "Config/LoadingModuleConfig", fileName = "LoadingModuleConfig")]
-    public class LoadingModuleConfig : ModuleConfigBase
+    public class LoadingConfig : ConfigBase
     {
         [field: SerializeField] public float StartupLoadingDuration { get; set; }
         [field: SerializeField] public LoadingPanel LoadingPanel { get; set; }

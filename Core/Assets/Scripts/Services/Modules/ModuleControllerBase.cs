@@ -15,7 +15,6 @@ namespace TendedTarsier.Core.Services.Modules
         private void Construct(DiContainer container)
         {
             _container = container;
-            _container.ResolveAll<IDisposable>().ForEach(d => CompositeDisposable.Add(d));
         }
 
         protected new T Instantiate<T>(T prefab, Transform parent = null, bool worldPositionStays = true) where T : Component
@@ -34,7 +33,10 @@ namespace TendedTarsier.Core.Services.Modules
 
         public virtual void Dispose()
         {
-            CompositeDisposable.Dispose();
+            if (!CompositeDisposable.IsDisposed)
+            {
+                CompositeDisposable.Dispose();
+            }
         }
 
         public virtual UniTask Initialize()

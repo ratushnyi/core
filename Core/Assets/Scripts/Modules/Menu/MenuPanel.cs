@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using TendedTarsier.Core.Modules.Loading;
 using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Modules;
@@ -73,16 +72,16 @@ namespace TendedTarsier.Core.Modules.Menu
 
         protected virtual void SubscribeButtons()
         {
-            _continueButton.OnClickAsObservable().Subscribe(_ => OnContinueButtonClick()).AddTo(CompositeDisposable);
-            _newGameButton.OnClickAsObservable().Subscribe(_ => OnNewGameButtonClick()).AddTo(CompositeDisposable);
-            _exitButton.OnClickAsObservable().Subscribe(_ => OnExitButtonClick()).AddTo(CompositeDisposable);
+            _continueButton.OnClickAsObservable().Subscribe(_ => OnContinueButtonClick()).AddTo(this);
+            _newGameButton.OnClickAsObservable().Subscribe(_ => OnNewGameButtonClick()).AddTo(this);
+            _exitButton.OnClickAsObservable().Subscribe(_ => OnExitButtonClick()).AddTo(this);
         }
 
         private async UniTask ShowButtons()
         {
             var showSequence = createSequence();
-            
-            CompositeDisposable.Add(Disposable.Create(() => showSequence.Kill()));
+
+            Disposable.Create(() => showSequence.Kill()).AddTo(this);
 
             await showSequence.ToUniTask();
 

@@ -5,7 +5,7 @@ using Zenject;
 
 namespace TendedTarsier.Core.Modules.Loading
 {
-    public class LoadingModuleInstaller : ModuleInstallerBase<LoadingModuleController, LoadingModuleConfig>
+    public class LoadingModuleInstaller : ModuleInstallerBase<LoadingModuleController, LoadingConfig>
     {
         private Canvas _canvas;
 
@@ -23,7 +23,7 @@ namespace TendedTarsier.Core.Modules.Loading
         
         private void BindPanels()
         {
-            ProjectContext.Instance.Container.BindPanel<LoadingPanel>(ModuleConfig.LoadingPanel, _canvas);
+            ProjectContext.Instance.Container.BindPanel(ModuleConfig.LoadingPanel, _canvas);
         }
 
         private void BindServices()
