@@ -41,6 +41,7 @@ namespace TendedTarsier.Core.Modules.Project
             Container.BindService<ProfileService>();
             Container.BindService<InputService>();
             Container.BindService<AudioService>();
+            Container.BindService<PanelService>();
             Container.BindService<BackButtonService>();
         }
 

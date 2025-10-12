@@ -7,7 +7,7 @@ using Zenject;
 
 namespace TendedTarsier.Core.Panels
 {
-    public abstract class ResultPanelBase<T> : PopupBase
+    public abstract class ResultPopupBase<T> : PopupBase
     {
         private readonly UniTaskCompletionSource<T> _resultCompletionSource = new();
 
@@ -48,6 +48,7 @@ namespace TendedTarsier.Core.Panels
     {
         public virtual bool ShowInstantly => _showInstantly;
 
+        [Inject] private PanelService _panelService;
         [SerializeField] private bool _showInstantly;
         [field: SerializeField] protected bool PlayAnimation { get; private set; } = true;
         [field: SerializeField] protected float AnimationDuration { get; private set; } = 0.2f;
@@ -62,6 +63,7 @@ namespace TendedTarsier.Core.Panels
 
         public virtual UniTask InitializeAsync()
         {
+            _panelService.RegisterPanel(this);
             _canvasGroup = GetComponent<CanvasGroup>();
             Initialize();
             return UniTask.CompletedTask;
