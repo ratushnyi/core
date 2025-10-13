@@ -23,6 +23,7 @@ namespace TendedTarsier.Core.Panels
         private readonly Canvas _canvas;
         private readonly DiContainer _container;
         private IDisposable _hideDisposable;
+        private AutoResetUniTaskCompletionSource _hideCompletionSource = AutoResetUniTaskCompletionSource.Create();
 
         public T Instance { get; private set; }
         public State PanelState { get; private set; }
@@ -73,44 +74,43 @@ namespace TendedTarsier.Core.Panels
             }
         }
 
-        public async UniTask Hide(bool immediate = false, bool waitForCompletion = false)
+        public async UniTask Hide(bool immediate = false)
         {
-            _hideDisposable.Dispose();
             if (Instance == null)
             {
                 Debug.LogError($"You try to Hide {nameof(T)} panel, but it not been Showed.");
                 return;
             }
+            
+            Instance.Hide(immediate);
+            await _hideCompletionSource.Task;
+        }
 
+        private async UniTaskVoid HideInternal(bool immediate = false)
+        {
+            _hideDisposable.Dispose();
             PanelState = State.Hiding;
             if (!immediate)
             {
                 await Instance.HideAnimation();
             }
             PanelState = State.Hide;
-
-            if (waitForCompletion)
-            {
-                await Unload();
-            }
-            else
-            {
-                Unload().Forget();
-            }
+            Unload();
         }
 
         private UniTask Load(IEnumerable<object> extraArgs)
         {
             Instance = _container.InstantiatePrefabForComponent<T>(_prefab, _canvas.transform, extraArgs);
-            _hideDisposable = Instance.HideObservable.Subscribe(t => Hide(t).Forget());
+            _hideDisposable = Instance.HideObservable.Subscribe(t => HideInternal(t).Forget());
             return UniTask.CompletedTask;
         }
 
-        private UniTask Unload()
+        private void Unload()
         {
             UnityEngine.Object.DestroyImmediate(Instance.gameObject);
             Instance = null;
-            return UniTask.CompletedTask;
+            _hideCompletionSource.TrySetResult();
+            _hideCompletionSource = AutoResetUniTaskCompletionSource.Create();
         }
     }
 }

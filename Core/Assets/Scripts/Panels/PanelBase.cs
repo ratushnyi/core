@@ -11,10 +11,10 @@ namespace TendedTarsier.Core.Panels
     {
         private readonly UniTaskCompletionSource<T> _resultCompletionSource = new();
 
-        public override void Hide(bool force = false)
+        public override void Hide(bool immediate = false)
         {
             _resultCompletionSource.TrySetResult(default);
-            base.Hide(force);
+            base.Hide(immediate);
         }
 
         protected void HideWithResult(T result)
@@ -114,9 +114,9 @@ namespace TendedTarsier.Core.Panels
             _hideCompletionSource.TrySetResult();
         }
 
-        public virtual void Hide(bool force = false)
+        public virtual void Hide(bool immediate = false)
         {
-            _hideSubject.OnNext(force);
+            _hideSubject.OnNext(immediate);
         }
 
         public async UniTask WaitForHide()
