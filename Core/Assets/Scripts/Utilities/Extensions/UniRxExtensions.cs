@@ -27,7 +27,17 @@ namespace TendedTarsier.Core.Utilities.Extensions
                 h => networkManager.OnConnectionEvent -= h
             );
         }
+        
+        public static IObservable<T> AsObservable<T>(this NetworkVariable<T> networkVariable)
+        {
+            return Observable.FromEvent<NetworkVariable<T>.OnValueChangedDelegate, T>(convert => (_, newValue) => convert(newValue), t => networkVariable.OnValueChanged += t, t => networkVariable.OnValueChanged -= t);
+        }
 #endif
+        public static void SetValue<T>(this ReactiveProperty<T> property, T value)
+        {
+            property.Value = value;
+        }
+        
         public static IObservable<Unit> AsObservable(this Action action)
         {
             return Observable.FromEvent(t => action += t, t => action -= t);
