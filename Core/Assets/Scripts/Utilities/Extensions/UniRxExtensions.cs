@@ -4,35 +4,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-#if NETCODE
-using Unity.Netcode;
-#endif
 
 namespace TendedTarsier.Core.Utilities.Extensions
 {
     public static class UniRxExtensions
     {
-#if NETCODE
-        public static IObservable<Unit> OnLoadCompleteAsObservable(this NetworkSceneManager networkSceneManager)
-        {
-            return Observable.FromEvent<NetworkSceneManager.OnLoadCompleteDelegateHandler>(convert => (_, _, _) => convert(), t => networkSceneManager.OnLoadComplete += t,
-                t => networkSceneManager.OnLoadComplete -= t);
-        }
-
-        public static IObservable<ConnectionEventData> OnConnectionEventAsObservable(this NetworkManager networkManager)
-        {
-            return Observable.FromEvent<Action<NetworkManager, ConnectionEventData>, ConnectionEventData>(
-                convert => (_, d) => convert(d),
-                h => networkManager.OnConnectionEvent += h,
-                h => networkManager.OnConnectionEvent -= h
-            );
-        }
-        
-        public static IObservable<T> AsObservable<T>(this NetworkVariable<T> networkVariable)
-        {
-            return Observable.FromEvent<NetworkVariable<T>.OnValueChangedDelegate, T>(convert => (_, newValue) => convert(newValue), t => networkVariable.OnValueChanged += t, t => networkVariable.OnValueChanged -= t);
-        }
-#endif
         public static void SetValue<T>(this ReactiveProperty<T> property, T value)
         {
             property.Value = value;

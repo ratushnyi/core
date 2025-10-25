@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -20,28 +21,13 @@ namespace TendedTarsier.Core.Modules.Menu
         [SerializeField] private Button _newGameButton;
         [SerializeField] private Button _exitButton;
 
-        private EventSystem _eventSystem;
-        private ProfileService _profileService;
-        private ModuleService _moduleService;
-        private ProjectProfile _projectProfile;
-        private ProjectConfig _projectConfig;
+        [Inject] protected EventSystem EventSystem;
+        [Inject] protected ProfileService ProfileService;
+        [Inject] protected ModuleService ModuleService;
+        [Inject] protected ProjectProfile ProjectProfile;
+        [Inject] protected ProjectConfig ProjectConfig;
 
         private readonly List<Button> _listButtons = new();
-
-        [Inject]
-        private void Construct(
-            ProjectConfig projectConfig,
-            ProjectProfile projectProfile,
-            ProfileService profileService,
-            ModuleService moduleService,
-            EventSystem eventSystem)
-        {
-            _projectConfig = projectConfig;
-            _projectProfile = projectProfile;
-            _profileService = profileService;
-            _moduleService = moduleService;
-            _eventSystem = eventSystem;
-        }
 
         public override async UniTask ShowAnimation()
         {
@@ -61,13 +47,13 @@ namespace TendedTarsier.Core.Modules.Menu
             RegisterButton(_continueButton);
             RegisterButton(_newGameButton);
             RegisterButton(_exitButton);
-            InitContinueButton(_projectProfile.FirstStartDate != default);
+            InitContinueButton(ProjectProfile.FirstStartDate != default);
         }
 
         protected void InitContinueButton(bool isInteractable)
         {
             _continueButton.interactable = isInteractable;
-            _eventSystem.SetSelectedGameObject(_continueButton.interactable ? _continueButton.gameObject : _newGameButton.gameObject);
+            EventSystem.SetSelectedGameObject(_continueButton.interactable ? _continueButton.gameObject : _newGameButton.gameObject);
         }
 
         protected virtual void SubscribeButtons()
@@ -102,15 +88,15 @@ namespace TendedTarsier.Core.Modules.Menu
 
         protected virtual UniTask OnContinueButtonClick()
         {
-            _profileService.SetNewGame(false);
-            return _moduleService.LoadModule(_projectConfig.GameplayScene);
+            ProfileService.SetNewGame(false);
+            return ModuleService.LoadModule(ProjectConfig.GameplayScene);
         }
 
         protected virtual UniTask OnNewGameButtonClick()
         {
-            _profileService.ClearAll();
-            _profileService.SetNewGame(true);
-            return _moduleService.LoadModule(_projectConfig.GameplayScene);
+            ProfileService.ClearAll();
+            ProfileService.SetNewGame(true);
+            return ModuleService.LoadModule(ProjectConfig.GameplayScene);
         }
 
         private void OnExitButtonClick()
