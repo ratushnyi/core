@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using TendedTarsier.Core.Services.Input;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -48,14 +49,17 @@ namespace TendedTarsier.Core.Panels
     {
         public virtual bool ShowInstantly => _showInstantly;
 
+        [Inject] private InputService _inputService;
         [Inject] private PanelService _panelService;
         [SerializeField] private bool _showInstantly;
+        [SerializeField] private bool _showCursor;
         [field: SerializeField] protected bool PlayAnimation { get; private set; } = true;
         [field: SerializeField] protected float AnimationDuration { get; private set; } = 0.2f;
         [field: SerializeField] protected Ease AnimationEase { get; private set; } = Ease.InOutSine;
 
         private CanvasGroup _canvasGroup;
         private Sequence _sequence;
+        private IDisposable _cursorDisposable;
 
         public IObservable<bool> HideObservable => _hideSubject;
         private readonly ISubject<bool> _hideSubject = new Subject<bool>();
@@ -65,6 +69,10 @@ namespace TendedTarsier.Core.Panels
         {
             _panelService.RegisterPanel(this);
             _canvasGroup = GetComponent<CanvasGroup>();
+            if (_showCursor)
+            {
+                _cursorDisposable = _inputService.ShowCursor();
+            }
             Initialize();
             return UniTask.CompletedTask;
         }
@@ -122,6 +130,11 @@ namespace TendedTarsier.Core.Panels
         public async UniTask WaitForHide()
         {
             await _hideCompletionSource.Task;
+        }
+
+        private void OnDestroy()
+        {
+            _cursorDisposable?.Dispose();
         }
     }
 }

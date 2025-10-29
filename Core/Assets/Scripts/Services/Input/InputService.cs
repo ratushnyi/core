@@ -1,14 +1,18 @@
 using System;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Utilities.Extensions;
+using UniRx;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
+using InputExtensions = TendedTarsier.Core.Utilities.Extensions.InputExtensions;
 
 namespace TendedTarsier.Core.Services.Input
 {
     [UsedImplicitly]
     public class InputService : ServiceBase, IInitializable
     {
+        private int _showCursorCounter;
         private readonly GameplayInput _gameplayInput;
 
         public GameplayInput.PlayerActions PlayerActions => _gameplayInput.Player;
@@ -80,6 +84,9 @@ namespace TendedTarsier.Core.Services.Input
 
         private void InitInput()
         {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            
             (OnJumpButtonStarted, OnJumpButtonPerformed, OnJumpButtonCanceled) = _gameplayInput.Player.Jump.AsObservable();
             (OnCrouchButtonStarted, OnCrouchButtonPerformed, OnCrouchButtonCanceled) = _gameplayInput.Player.Crouch.AsObservable();
             (OnAttackButtonStarted, OnAttackButtonPerformed, OnAttackButtonCanceled) = _gameplayInput.Player.Attack.AsObservable();
@@ -95,6 +102,28 @@ namespace TendedTarsier.Core.Services.Input
             (OnOptionsButtonStarted, OnOptionsButtonPerformed, OnOptionsButtonCanceled) = _gameplayInput.Player.Options.AsObservable();
 
             _gameplayInput.Player.Enable();
+        }
+
+        public IDisposable ShowCursor()
+        {
+            if (!InputExtensions.IsMouseKeyboardInput)
+            {
+                return null;
+            }
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            _showCursorCounter++;
+
+            return Disposable.Create(() =>
+            {
+                _showCursorCounter--;
+                if (_showCursorCounter == 0)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+            });
         }
     }
 }
