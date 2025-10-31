@@ -75,28 +75,86 @@ namespace TendedTarsier.Core.Utilities.Extensions
 
             return false;
         }
-
-        public static void SerializeList<T, TSerializer>(this BufferSerializer<TSerializer> serializer, ref List<T> list) where TSerializer : IReaderWriter where T : INetworkSerializable, new()
+        public static void SerializeArray<T, TReaderWriter>(this ref BufferSerializer<TReaderWriter> serializer, ref T[] array) where T : struct, INetworkSerializable where TReaderWriter : IReaderWriter
         {
-            var count = list?.Count ?? 0;
-            serializer.SerializeValue(ref count);
-
-            if (serializer.IsReader)
+            int length;
+            if (serializer.IsWriter)
             {
-                list = new List<T>(count);
-                for (var i = 0; i < count; i++)
+                length = array?.Length ?? 0;
+                serializer.SerializeValue(ref length);
+
+                if (array == null)
                 {
-                    T element = new();
-                    element.NetworkSerialize(serializer);
-                    list.Add(element);
+                    return;
+                }
+
+                for (int i = 0; i < length; i++)
+                {
+                    var value = array[i];
+                    serializer.SerializeNetworkSerializable(ref value);
                 }
             }
-            else if (list != null)
+            else
             {
-                for (var i = 0; i < count; i++)
+                length = 0;
+                serializer.SerializeValue(ref length);
+
+                if (array == null || array.Length != length)
                 {
-                    var element = list[i];
-                    element.NetworkSerialize(serializer);
+                    array = new T[length];
+                }
+
+                for (int i = 0; i < length; i++)
+                {
+                    var value = default(T);
+                    serializer.SerializeNetworkSerializable(ref value);
+                    array[i] = value;
+                }
+            }
+        }
+
+        public static void SerializeList<T, TReaderWriter>(this ref BufferSerializer<TReaderWriter> serializer, ref List<T> list) where T : struct, INetworkSerializable where TReaderWriter : IReaderWriter
+        {
+            int count;
+            if (serializer.IsWriter)
+            {
+                count = list?.Count ?? 0;
+                serializer.SerializeValue(ref count);
+
+                if (list == null)
+                {
+                    return;
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    var value = list[i];
+                    serializer.SerializeNetworkSerializable(ref value);
+                }
+            }
+            else
+            {
+                count = 0;
+                serializer.SerializeValue(ref count);
+
+                if (list == null)
+                {
+                    list = new List<T>(count);
+                }
+                else
+                {
+                    list.Clear();
+                    if (list.Capacity < count)
+                    {
+                        list.Capacity = count;
+                    }
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    var value = default(T);
+                    serializer.SerializeNetworkSerializable(ref value);
+                    list.Add(value);
                 }
             }
         }
