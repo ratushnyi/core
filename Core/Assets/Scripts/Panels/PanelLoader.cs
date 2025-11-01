@@ -81,6 +81,11 @@ namespace TendedTarsier.Core.Panels
                 Debug.LogError($"You try to Hide {nameof(T)} panel, but it not been Showed.");
                 return;
             }
+
+            if (PanelState == State.Hiding)
+            {
+                return;
+            }
             
             Instance.Hide(immediate);
             await _hideCompletionSource.Task;
