@@ -4,6 +4,7 @@ using DG.Tweening;
 using TendedTarsier.Core.Services.Input;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace TendedTarsier.Core.Panels
@@ -35,10 +36,15 @@ namespace TendedTarsier.Core.Panels
 
     public class PopupBase : PanelBase
     {
+        [SerializeField] Button _backgroundCloseButton;
         [Inject] private BackButtonService _backButtonService;
 
         public override UniTask InitializeAsync()
         {
+            if (_backgroundCloseButton != null)
+            {
+                _backgroundCloseButton.interactable = Application.isMobilePlatform;
+            }
             _backButtonService.AddAction(() => Hide()).AddTo(this);
             return base.InitializeAsync();
         }

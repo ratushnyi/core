@@ -11,22 +11,14 @@ namespace TendedTarsier.Core.Panels
     [UsedImplicitly]
     public class PanelLoader<T> where T : PanelBase
     {
-        public enum State
-        {
-            Hide = 0,
-            Show = 1,
-            Hiding = 2,
-            Showing = 3,
-        }
-
+        public T Instance { get; private set; }
+        public IReadOnlyReactiveProperty<PanelState> PanelState => _panelState;
+        private readonly ReactiveProperty<PanelState> _panelState = new();
         private readonly T _prefab;
         private readonly Canvas _canvas;
         private readonly DiContainer _container;
         private IDisposable _hideDisposable;
         private AutoResetUniTaskCompletionSource _hideCompletionSource = AutoResetUniTaskCompletionSource.Create();
-
-        public T Instance { get; private set; }
-        public State PanelState { get; private set; }
 
         private PanelLoader(T prefab, Canvas canvas, DiContainer container)
         {
@@ -48,7 +40,7 @@ namespace TendedTarsier.Core.Panels
                 return Instance;
             }
 
-            PanelState = State.Showing;
+            _panelState.Value = Panels.PanelState.Showing;
             extraArgs ??= Array.Empty<object>();
             await Load(extraArgs);
 
@@ -70,7 +62,7 @@ namespace TendedTarsier.Core.Panels
                 {
                     await Instance.ShowAnimation();
                 }
-                PanelState = State.Show;
+                _panelState.Value = Panels.PanelState.Show;
             }
         }
 
@@ -82,7 +74,7 @@ namespace TendedTarsier.Core.Panels
                 return;
             }
 
-            if (PanelState == State.Hiding)
+            if (PanelState.Value == Panels.PanelState.Hiding)
             {
                 return;
             }
@@ -94,12 +86,12 @@ namespace TendedTarsier.Core.Panels
         private async UniTaskVoid HideInternal(bool immediate = false)
         {
             _hideDisposable.Dispose();
-            PanelState = State.Hiding;
+            _panelState.Value = Panels.PanelState.Hiding;
             if (!immediate)
             {
                 await Instance.HideAnimation();
             }
-            PanelState = State.Hide;
+            _panelState.Value = Panels.PanelState.Hide;
             Unload();
         }
 
