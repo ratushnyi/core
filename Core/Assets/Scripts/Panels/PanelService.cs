@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TendedTarsier.Core.Services;
 using UniRx;
+using UniRx.Triggers;
 
 namespace TendedTarsier.Core.Panels
 {
@@ -14,7 +15,7 @@ namespace TendedTarsier.Core.Panels
         public void RegisterPanel(PanelBase panel)
         {
             ActivePanels.Add(panel);
-            panel.HideObservable.Subscribe(_ => ActivePanels.Remove(panel)).AddTo(CompositeDisposable);
+            panel.OnDestroyAsObservable().Subscribe(_ => ActivePanels.Remove(panel)).AddTo(CompositeDisposable);
         }
     }
 }

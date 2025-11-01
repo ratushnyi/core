@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Modules.Loading;
@@ -15,8 +14,6 @@ namespace TendedTarsier.Core.Services.Modules
     [UsedImplicitly]
     public class ModuleService : ServiceBase
     {
-        private Action OnComplete;
-        private Action<string> OnCompleteString;
         private readonly PanelLoader<LoadingPanel> _loaderPanel;
         public ModuleControllerBase CurrentModule { get; private set; }
 
