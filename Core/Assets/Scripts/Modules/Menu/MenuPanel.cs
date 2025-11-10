@@ -87,14 +87,12 @@ namespace TendedTarsier.Core.Modules.Menu
 
         protected virtual UniTask OnContinueButtonClick()
         {
-            ProfileService.SetNewGame(false);
             return ModuleService.LoadModule(ProjectConfig.GameplayScene);
         }
 
         protected virtual UniTask OnNewGameButtonClick()
         {
             ProfileService.ClearAll();
-            ProfileService.SetNewGame(true);
             return ModuleService.LoadModule(ProjectConfig.GameplayScene);
         }
 

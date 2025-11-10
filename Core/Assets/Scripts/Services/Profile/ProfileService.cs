@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using MemoryPack;
-using TendedTarsier.Core.Modules.Loading;
 using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Utilities.Extensions;
 using TendedTarsier.Core.Utilities.MemoryPack.FormatterProviders;
@@ -23,7 +23,6 @@ namespace TendedTarsier.Core.Services.Profile
         private readonly ISubject<Unit> _clearAllSubject = new Subject<Unit>();
         private readonly UniTaskCompletionSource _initializedTask = new();
         private readonly Dictionary<string, IProfile> _profiles = new();
-        private bool _newGame;
 
         public void Initialize()
         {
@@ -72,7 +71,7 @@ namespace TendedTarsier.Core.Services.Profile
             await _initializedTask.Task;
             profile.RegisterFormatters();
             var path = GetSectionPath(profile.Name);
-            if (!_newGame && File.Exists(path))
+            if (File.Exists(path))
             {
                 try
                 {
@@ -158,16 +157,31 @@ namespace TendedTarsier.Core.Services.Profile
             }
             _clearAllSubject.OnNext(Unit.Default);
         }
+        
+#if NETCODE
+        public bool IsServerSaveExist(string serverId)
+        {
+            serverId += "_";
+            var files = Directory.GetFiles(ProfilesDirectory);
+            return files.Any(file => file.StartsWith(serverId));
+        }
+        
+        public void ClearServerSave(string serverId)
+        {
+            serverId += "_";
+            var files = Directory.GetFiles(ProfilesDirectory);
+            var serverSave = files.Where(file => file.StartsWith(serverId));
+            foreach (var file in serverSave)
+            {
+                File.Delete(file);
+            }
+        }
+#endif
 
         public override void Dispose()
         {
             base.Dispose();
             SaveAll();
-        }
-
-        public void SetNewGame(bool value)
-        {
-            _newGame = value;
         }
     }
 }
