@@ -176,6 +176,11 @@ namespace TendedTarsier.Core.Utilities.Extensions
                 t => networkVariable.OnListChanged -= t);
         }
 
+        public static IReadOnlyReactiveProperty<T> AsReactiveProperty<T>(this NetworkVariable<T> networkVariable) where T : unmanaged, IEquatable<T>
+        {
+            return new ReadOnlyReactiveProperty<T>(networkVariable.AsObservable(), networkVariable.Value);
+        }
+
         public static IObservable<Unit> OnLoadCompleteAsObservable(this NetworkSceneManager networkSceneManager)
         {
             return Observable.FromEvent<NetworkSceneManager.OnLoadCompleteDelegateHandler>(convert => (_, _, _) => convert(), t => networkSceneManager.OnLoadComplete += t,

@@ -170,7 +170,7 @@ namespace TendedTarsier.Core.Services.Profile
         {
             serverId += "_";
             var files = Directory.GetFiles(ProfilesDirectory);
-            var serverSave = files.Where(file => file.StartsWith(serverId));
+            var serverSave = files.Where(file => file.StartsWith(serverId) || !file.Contains('_'));
             foreach (var file in serverSave)
             {
                 File.Delete(file);

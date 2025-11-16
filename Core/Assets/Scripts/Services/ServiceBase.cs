@@ -8,25 +8,30 @@ namespace TendedTarsier.Core.Services
     public abstract class ServiceBase : IDisposable, IInitializable
     {
         protected readonly CompositeDisposable CompositeDisposable = new();
-        [Inject] private DiContainer Container;
+        [Inject] private DiContainer _container;
 
         void IInitializable.Initialize()
         {
             Observable.OnceApplicationQuit().Subscribe(_ => Terminate());
         }
 
-        protected T Instantiate<T>(T prefab, Transform parent = null, bool worldPositionStays = true) where T : Component
+        protected T Instantiate<T>(T prefab, Transform parent = null, bool worldPositionStays = true, params Type[] components) where T : Component
         {
-            var go = Container.InstantiatePrefabForComponent<T>(prefab, parent);
+            var instance = _container.InstantiatePrefabForComponent<T>(prefab, parent);
+
+            foreach (var component in components)
+            {
+                instance.gameObject.AddComponent(component);
+            }
 
             if (!worldPositionStays)
             {
-                go.transform.localPosition = Vector3.zero;
+                instance.transform.localPosition = Vector3.zero;
             }
 
-            Container.BindInstance(go);
+            _container.BindInstance(instance);
 
-            return go;
+            return instance;
         }
 
         private void Terminate()
