@@ -106,7 +106,7 @@ namespace TendedTarsier.Core.Services.Input
 
         public IDisposable ShowCursor()
         {
-            if (!InputExtensions.IsMouseKeyboardInput)
+            if (!InputExtensions.IsDesktopInput)
             {
                 return null;
             }

@@ -2,6 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TendedTarsier.Core.Services.Input;
+using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,7 +44,7 @@ namespace TendedTarsier.Core.Panels
         {
             if (_backgroundCloseButton != null)
             {
-                _backgroundCloseButton.interactable = Application.isMobilePlatform;
+                _backgroundCloseButton.interactable = InputExtensions.IsMobileInput;
             }
             _backButtonService.AddAction(() => Hide()).AddTo(this);
             return base.InitializeAsync();
