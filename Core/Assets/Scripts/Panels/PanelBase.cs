@@ -14,16 +14,23 @@ namespace TendedTarsier.Core.Panels
     {
         private readonly UniTaskCompletionSource<T> _resultCompletionSource = new();
 
-        public override void Hide(bool immediate = false)
+        private T _defaultResult = default;
+
+        protected void SetDefaultResult(T result)
         {
-            _resultCompletionSource.TrySetResult(default);
-            base.Hide(immediate);
+            _defaultResult = result;
         }
 
         protected void HideWithResult(T result)
         {
             _resultCompletionSource.TrySetResult(result);
             Hide();
+        }
+
+        public override void Hide(bool immediate = false)
+        {
+            _resultCompletionSource.TrySetResult(_defaultResult);
+            base.Hide(immediate);
         }
 
         public async UniTask<T> WaitForResult()

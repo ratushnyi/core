@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UniRx;
+using Unity.Collections;
 using Unity.Netcode;
 
 namespace TendedTarsier.Core.Utilities.Extensions
@@ -17,6 +18,22 @@ namespace TendedTarsier.Core.Utilities.Extensions
                 (float v, NetworkVariable<float> nv) => DOTween.To(() => nv.Value, t => nv.Value = t, v, duration),
                 _ => null
             };
+        }
+
+        public static bool TryGet<T>(this NativeArray<T>.ReadOnly array, Func<T, bool> predicate, out T result) where T : unmanaged, IEquatable<T>
+        {
+            for (var index = 0; index < array.Length; index++)
+            {
+                if (!predicate(array[index]))
+                {
+                    continue;
+                }
+                result = array[index];
+                return true;
+            }
+
+            result = default;
+            return false;
         }
 
         public static bool TryGet<T>(this NetworkList<T> list, Func<T, bool> predicate, out T result) where T : unmanaged, IEquatable<T>
@@ -75,6 +92,7 @@ namespace TendedTarsier.Core.Utilities.Extensions
 
             return false;
         }
+
         public static void SerializeArray<T, TReaderWriter>(this ref BufferSerializer<TReaderWriter> serializer, ref T[] array) where T : struct, INetworkSerializable where TReaderWriter : IReaderWriter
         {
             int length;
