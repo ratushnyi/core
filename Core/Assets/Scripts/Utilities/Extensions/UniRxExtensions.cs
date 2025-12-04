@@ -9,7 +9,7 @@ namespace TendedTarsier.Core.Utilities.Extensions
 {
     public static class UniRxExtensions
     {
-        public static bool TryGet<T>(this ReactiveCollection<T> list, Func<T, bool> predicate, out T result) where T : unmanaged, IEquatable<T>
+        public static bool TryGet<T>(this IReadOnlyReactiveCollection<T> list, Func<T, bool> predicate, out T result) where T : unmanaged, IEquatable<T>
         {
             for (var index = 0; index < list.Count; index++)
             {
@@ -23,6 +23,11 @@ namespace TendedTarsier.Core.Utilities.Extensions
 
             result = default;
             return false;
+        }
+        
+        public static bool TryGet<T>(this ReactiveCollection<T> list, Func<T, bool> predicate, out T result) where T : unmanaged, IEquatable<T>
+        {
+            return TryGet((IReadOnlyReactiveCollection<T>)list, predicate, out result);
         }
         
         public static void SetValue<T>(this ReactiveProperty<T> property, T value)

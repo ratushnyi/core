@@ -56,7 +56,10 @@ namespace TendedTarsier.Core.Panels
 
         private void OnBackButtonClicked()
         {
-            _backButtonStack.Peek().Perform();
+            if (_backButtonStack.Count > 0)
+            {
+                _backButtonStack.Peek().Perform();
+            }
         }
     }
 }

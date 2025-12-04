@@ -21,12 +21,6 @@ namespace TendedTarsier.Core.Utilities.MemoryPack.FormatterProviders
 
         public override void Deserialize(ref MemoryPackReader reader, ref ReactiveProperty<T>? value)
         {
-            if (reader.PeekIsNull())
-            {
-                value = null;
-                return;
-            }
-
             var formatter = reader.GetFormatter<T>();
             T? deserializedValue = default;
 
