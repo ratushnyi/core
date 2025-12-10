@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,6 +10,33 @@ namespace TendedTarsier.Core.Utilities.Extensions
 {
     public static class UniRxExtensions
     {
+        public static int FindIndex<T>(this ReactiveCollection<T> list, Func<T, bool> predicate)
+        {
+            for (int index = 0; index < list.Count; ++index)
+            {
+                if (predicate(list[index]))
+                {
+                    return index;
+                }
+            }
+
+            return -1;
+        }
+
+        public static List<int> FindIndexes<T>(this ReactiveCollection<T> list, Func<T, bool> predicate)
+        {
+            var result = new List<int>();
+            for (int index = 0; index < list.Count; ++index)
+            {
+                if (predicate(list[index]))
+                {
+                    result.Add(index);
+                }
+            }
+
+            return result;
+        }
+
         public static bool TryGet<T>(this IReadOnlyReactiveCollection<T> list, Func<T, bool> predicate, out T result) where T : unmanaged, IEquatable<T>
         {
             for (var index = 0; index < list.Count; index++)
@@ -24,17 +52,17 @@ namespace TendedTarsier.Core.Utilities.Extensions
             result = default;
             return false;
         }
-        
+
         public static bool TryGet<T>(this ReactiveCollection<T> list, Func<T, bool> predicate, out T result) where T : unmanaged, IEquatable<T>
         {
             return TryGet((IReadOnlyReactiveCollection<T>)list, predicate, out result);
         }
-        
+
         public static void SetValue<T>(this ReactiveProperty<T> property, T value)
         {
             property.Value = value;
         }
-        
+
         public static IObservable<Unit> AsObservable(this Action action)
         {
             return Observable.FromEvent(t => action += t, t => action -= t);
@@ -96,9 +124,8 @@ namespace TendedTarsier.Core.Utilities.Extensions
                 var value = PlayerPrefs.GetString(_key, Convert.ToString(defaultValue));
                 Value = (T)Convert.ChangeType(value, typeof(T));
             }
-            
         }
-        
+
         protected override void SetValue(T value)
         {
             base.SetValue(value);
